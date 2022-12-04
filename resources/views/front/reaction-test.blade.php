@@ -39,7 +39,7 @@
                                         </li>
                                     </ul>
                                 </section>
-                                <h2 class="fs-2 fw-bold mx-3 text-white"><span id="leveloneattempt" class="mx-3">1</span>Attempt</h2>
+                                <h2 class="fs-2 fw-bold mx-3 text-white"><span id="attemptlevel" class="mx-3">1</span>Attempt</h2>
                                 <p class="mt-4 attempttext text-white">You will see a gray button on a screen. In a few seconds it will become green.<br> Your task is to press on it as fast as you can and we will calculate your reaction.</p>
                                 </div>
                             </div>
@@ -365,10 +365,12 @@
             var active;
             var trial = 1;
             var scores = [];
+            var random = 3000;
 
             start();
             var interval;
             function start(){
+                random = getRandom() * 1000;
                 interval = setTimeout(function(){
                     if(isRetry == false){
                         milliseconds = 0;
@@ -379,7 +381,13 @@
                         isGreenClicked = false;
                         setMs();
                     }
-                },3000)
+                },random)
+            }
+            function getRandom(){
+                let min = 1;
+                let max = 6;
+                
+                return Math.floor(Math.random() * (max - min + 1)) + min;
             }
 
             function setMs(){
@@ -431,6 +439,7 @@
                 scores.push(milliseconds);
                 $('#staticBackdrop').hide();
                 trial += 1;
+                $('#attemptlevel').text(trial);
                 $('.skewX-tab').removeClass('text-white active');
                 $('.trial'+trial).addClass('text-white active');
                 restart();
