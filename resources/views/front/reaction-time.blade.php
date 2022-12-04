@@ -7,11 +7,6 @@
     {!! Html::style('plugins/flatpickr/flatpickr.css') !!}
     {!! Html::style('plugins/flatpickr/custom-flatpickr.css') !!}
     {!! Html::style('assets/css/elements/tooltip.css') !!}
-
-    <meta name="theme-color" content="#6777ef"/>
-    <link rel="apple-touch-icon" href="{{ asset('b.png') }}">
-    <link rel="manifest" href="{{ asset('/manifest.json') }}">
-
 @endpush
 
 @section('content')
@@ -27,43 +22,9 @@
                         <nav class="breadcrumb-one" aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href=""> {{__('Dashboard')}}</a></li>
-                                <li class="breadcrumb-item active" aria-current="page"><span> {{__('Dashboard')}}</span></li>
+                                <li class="breadcrumb-item active" aria-current="page"><span> {{__('Reaction Time')}}</span></li>
                             </ol>
                         </nav>
-                    </div>
-                </li>
-            </ul>
-
-            <ul class="navbar-nav d-flex align-center ml-auto right-side-filter">
-                <li class="nav-item more-dropdown">
-                    <div class="input-group input-group-sm">
-                        <input id="rangeCalendarFlatpickr" class="form-control flatpickr flatpickr-input active" type="text" placeholder="{{__('Select Date')}}">
-                        <div class="input-group-append">
-                            <span class="input-group-text bg-primary border-primary" id="basic-addon2">
-                                <i class="lar la-calendar"></i>
-                            </span>
-                        </div>
-                    </div>
-                </li>
-                <li class="nav-item more-dropdown">
-                    <a href="javascript: void(0);" data-original-title="{{__('Reload Data')}}"data-placement="bottom" class="btn btn-primary dash-btn btn-sm ml-2 bs-tooltip">
-                        <i class="las la-sync"></i>
-                    </a>
-                </li>
-                <li class="nav-item custom-dropdown-icon">
-                    <a href="javascript: void(0);" data-original-title="{{__('Filter')}}" data-placement="bottom" id="customDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-primary dash-btn btn-sm ml-2 bs-tooltip">
-                        <i class="las la-filter"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="customDropdown">
-                        <a class="dropdown-item" href="javascript:void(0);">2022</a>
-                        <a class="dropdown-item" href="javascript:void(0);">2023</a>
-                        <a class="dropdown-item" href="javascript:void(0);">2024</a>
-                        <a class="dropdown-item" href="javascript:void(0);">2025</a>
-                        <a class="dropdown-item" href="javascript:void(0);">2026</a>
-                        <a class="dropdown-item" href="javascript:void(0);">2027</a>
-                        <a class="dropdown-item" href="javascript:void(0);">2028</a>
-                        <a class="dropdown-item" href="javascript:void(0);">2029</a>
-                        <a class="dropdown-item" href="javascript:void(0);">2030</a>
                     </div>
                 </li>
             </ul>
@@ -71,113 +32,269 @@
     </div>
     <!--  Navbar Ends / Breadcrumb Area  -->
     <!-- Main Body Starts -->
+
+    <section id="level1start" class="my-5">
+        <!-- <div class="css-1qvtbrk e19owgy78">
+            <center>
+                <i class="fa fa-line-chart"></i>
+            </center>
+        </div> -->
+        <div class="section-title text-center text-white">
+            <h1 class="fw-bold">CNS Benchmarks</h1>
+            <p class="text-center mt-4">Measure your Central Nervous System core capabilities with the Quest Vitality CNS Screen.</p>
+        </div><br>
+        <div class="arrow-container">
+            <div class="arrow-down"></div>
+        </div>
+        <div class="d-flex justify-content-center block-width">
+            <div class="circle-container d-flex justify-content-center mt-5">
+                <div id="levelone" class="startNow circle color-green d-flex justify-content-center align-items-center">
+                    <span class="fs-4 text-white fw-bold">Start Now</span>
+                </div>
+            </div>
+        </div>
+    </section>
+     <style>
+        .my-5{
+            margin-top: 3rem!important;
+            margin-bottom: 3rem!important;
+        }
+        .section-title{
+            width: 60%;
+            margin: 0 auto;
+        }
+        .text-white{
+            color: #fff!important;
+        }
+        .text-center{
+            text-align: center!important;
+        }
+        .fw-bold{
+            font-weight: 700!important;
+        }
+        @media (min-width: 1200px){
+            .h1, h1 {
+                font-size: 2.5rem;
+            }
+        }
+        .text-center{
+            text-align: center!important;
+        }
+        .mt-4{
+            margin-top: 1.5rem!important;
+        }
+        .block-width{
+            flex-direction: row;
+            flex-wrap: wrap;
+            width: 75%;
+            margin: 0 auto;
+        }
+        .d-flex{
+            display: flex!important;
+        }
+        .btn-green, .color-green, .save-btn .btn{
+            background-color: #53bf5f!important;
+            cursor: pointer;
+        }
+        .circle{
+            width: 200px;
+            height: 200px;
+            border-radius: 9999px;
+            margin: 10px;
+            box-shadow: 0 0 0 10px #2c353f;
+        }
+        @media (min-width: 1200px){
+            .fs-4 {
+                font-size: 1.5rem!important;
+            }
+        }
+        .text-white{
+            color: #fff!important;
+        }
+        .fa-line-chart{
+            font-size: 150px;
+            color: white;
+        }
+
+        .arrow-container {
+            width: 25px;
+            animation: bounce 1600ms infinite cubic-bezier(0.445, 0.05, 0.55, 0.95);
+            cursor: pointer;
+            height: 20px;
+            margin-left: 49%;
+        }
+        .arrow-down {
+            height: 6px;
+            background: white;
+            transform: rotate(45deg);
+            transform-origin: 0% 0%;
+            border-radius: 5px;
+        }
+        .arrow-down:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            bottom: 0;
+            left: 100%;
+            border-radius: 5px;
+            background: white;
+            transform: rotate(-90deg);
+            transform-origin: 0% 100%;
+        }
+
+        @keyframes bounce {
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+    </style>
     <div class="layout-px-spacing">
         <div class="row layout-top-spacing">
-            <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
-                <a class="widget quick-category">
-                    <div class="quick-category-head">
-                        <span class="quick-category-icon qc-primary rounded-circle">
-                            <i class="las la-play"></i>
-                        </span>
+            <!-- <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+                <div class="widget widget-chart-one">
+                    <div class="widget-heading test-section">
+                        <div class="css-42wpoy e19owgy79">
+                            <div class="anim-slide-fade-in">
+                                <div class="css-1qvtbrk e19owgy78">
+                                    <div class="css-1qvtbrk e19owgy78">
+                                        <center>
+                                            <i class="fa fa-line-chart"></i>
+                                        </center>
+                                    </div>
+                                    <div class="css-1qvtbrk e19owgy78">
+                                        <div style="opacity: 1; transition: all 1s linear 0s;">
+                                            <center><h1>CNS Benchmarks</h1></center>
+                                        </div>
+                                        <div style="opacity: 1; transition: all 1s linear 0s;">
+                                            <center><h2>Measure your Central Nervous System core capabilities with the Quest Vitality CNS Screen.</h2></center>
+                                        </div>
+                                    </div><br>
+                                    <div class="arrow-container">
+                                        <div class="arrow-down"></div>
+                                    </div><br>
+                                    <div class="css-1qvtbrk e19owgy78">
+                                        <center><a style="color: white;" href="{{ route('reaction-test') }}">Click to play now!</a></center>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="quick-category-content">
-                        <h3>100 ms</h3>
-                        <p class="font-17 text-primary mb-0"> {{ __('Reaction Time') }}</p>
-                    </div>
-                </a>
+                </div>
             </div>
-            <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
-                <a class="widget quick-category">
-                    <div class="quick-category-head">
-                        <span class="quick-category-icon qcompare-danger rounded-circle">
-                            <i class="las la-play"></i>
-                        </span>
-                    </div>
-                    <div class="quick-category-content">
-                        <h3>0 ms</h3>
-                        <p class="font-17 text-danger mb-0"> {{ __('Visual Memory') }}</p>
-                    </div>
-                </a>
-            </div>
-            <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
-                <a class="widget quick-category">
-                    <div class="quick-category-head">
-                        <span class="quick-category-icon qc-warning rounded-circle">
-                            <i class="las la-play"></i>
-                        </span>
-                    </div>
-                    <div class="quick-category-content">
-                        <h3>0 ms</h3>
-                        <p class="font-17 text-warning mb-0"> {{ __('Number Memory') }}</p>
-                    </div>
-                </a>
-            </div>
-            <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
-                <a class="widget quick-category">
-                    <div class="quick-category-head">
-                        <span class="quick-category-icon qcompare-success rounded-circle">
-                            <i class="las la-play"></i>
-                        </span>
-                    </div>
-                    <div class="quick-category-content">
-                        <h3>0 ms</h3>
-                        <p class="font-17 text-success mb-0"> {{ __('Verbal Memory') }}</p>
-                    </div>
-                </a>
-            </div>
-            <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
-                <a class="widget quick-category">
-                    <div class="quick-category-head">
-                        <span class="quick-category-icon qc-primary rounded-circle">
-                            <i class="las la-play"></i>
-                        </span>
-                    </div>
-                    <div class="quick-category-content">
-                        <h3>0 ms</h3>
-                        <p class="font-17 text-primary mb-0"> {{ __('Typing') }}</p>
-                    </div>
-                </a>
-            </div>
-            <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
-                <a class="widget quick-category">
-                    <div class="quick-category-head">
-                        <span class="quick-category-icon qcompare-danger rounded-circle">
-                            <i class="las la-play"></i>
-                        </span>
-                    </div>
-                    <div class="quick-category-content">
-                        <h3>0 ms</h3>
-                        <p class="font-17 text-danger mb-0"> {{ __('Aim Trainer') }}</p>
-                    </div>
-                </a>
-            </div>
-            <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
-                <a class="widget quick-category">
-                    <div class="quick-category-head">
-                        <span class="quick-category-icon qc-warning rounded-circle">
-                            <i class="las la-play"></i>
-                        </span>
-                    </div>
-                    <div class="quick-category-content">
-                        <h3>0 ms</h3>
-                        <p class="font-17 text-warning mb-0"> {{ __('Chimp Test') }}</p>
-                    </div>
-                </a>
-            </div>
-            <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
-                <a class="widget quick-category">
-                    <div class="quick-category-head">
-                        <span class="quick-category-icon qcompare-success rounded-circle">
-                            <i class="las la-play"></i>
-                        </span>
-                    </div>
-                    <div class="quick-category-content">
-                        <h3>0 ms</h3>
-                        <p class="font-17 text-success mb-0"> {{ __('Sequence Memory') }}</p>
-                    </div>
-                </a>
-            </div>
-            
+           
+            <style>
+                .css-saet2v.view-splash{
+                    background: rgb(43, 135, 209);
+                }
+                .css-saet2v{
+                    position: relative;
+                    color: white;
+                    overflow: hidden;
+                    text-align: center;
+                    cursor: pointer;
+                    user-select: none;
+                }
+                .css-42wpoy{
+                    display: flex;
+                    flex-direction: column;
+                    -webkit-box-pack: center;
+                    justify-content: center;
+                    margin: 0px auto;
+                    max-width: 1010px;
+                    position: relative;
+                }
+                .css-1gr1qbh .anim-slide-fade-in{
+                    animation-name: slideFadeIn;
+                    animation-duration: 0.5s;
+                    animation-timing-function: ease-out;
+                }
+                .css-1gr1qbh .hero-icon{
+                    width: 100px;
+                    height: 100px;
+                }
+                .css-1gr1qbh .pulse-faint{
+                    animation: 1s ease-in-out 0s infinite alternate none running pulse-faint;
+                }
+                .css-1qvtbrk + .css-1qvtbrk{
+                    margin: 30px 0px 0px;
+                }
+                .css-1qvtbrk h1, h2{
+                    color: white;
+                }
+                .test-section{
+                    background-color: #2262c6;
+                    border-radius: 20px;
+                }
+                .pulse-faint{
+                    color: white;
+                }
+                .widget-chart-one .widget-heading{
+                    padding: 30px;
+                }
+                .css-1qvtbrk + .css-1qvtbrk{
+                    margin: 30px 0px 0px;
+                }
+                .css-1gr1qbh a{
+                    cursor: pointer;
+                }
+                .css-de05nr{
+                    padding: 12px 30px;
+                    background: rgb(255, 209, 84);
+                    display: inline-block;
+                    border: none;
+                    border-radius: 3px;
+                    transition: background 0.1s linear 0s;
+                    font-weight: bold;
+                    font-size: inherit;
+                    font-family: inherit;
+                    line-height: inherit;
+                    color: rgb(51, 51, 51) !important;
+                    text-decoration: none !important;
+                }
+                .css-de05nr:hover{
+                    background-color: white;
+                }
+                .fa-line-chart{
+                    font-size: 150px;
+                    color: white;
+                }
+
+                .arrow-container {
+                    width: 25px;
+                    animation: bounce 1600ms infinite cubic-bezier(0.445, 0.05, 0.55, 0.95);
+                    cursor: pointer;
+                    height: 20px;
+                    margin-left: 49%;
+                }
+
+                .arrow-down {
+                    height: 6px;
+                    background: white;
+                    transform: rotate(45deg);
+                    transform-origin: 0% 0%;
+                    border-radius: 5px;
+                }
+                .arrow-down:after {
+                    content: '';
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    bottom: 0;
+                    left: 100%;
+                    border-radius: 5px;
+                    background: white;
+                    transform: rotate(-90deg);
+                    transform-origin: 0% 100%;
+                }
+
+                @keyframes bounce {
+                    50% {
+                        transform: translateY(-15px);
+                    }
+                }
+            </style> -->
+
             <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
                 <div class="widget widget-chart-one">
                     <div class="widget-heading">
@@ -273,9 +390,6 @@
                                     <th><div class="th-content"> {{__('Stats')}}</div></th>
                                     <th><div class="th-content"> {{__('Score')}}</div></th>
                                     <th><div class="th-content"> {{__('Percentile')}}</div></th>
-                                    <th><div class="th-content"> {{__('Best Time')}}</div></th>
-                                    <th><div class="th-content"> {{__('Bad Day')}}</div></th>
-                                    <th><div class="th-content"> {{__('Personal Average Reaction')}}</div></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -289,9 +403,6 @@
                                     </td>
                                     <td><b>402</b> ms</td>
                                     <td><b>2.3</b> %</td>
-                                    <td><b>2.3</b></td>
-                                    <td><b>2.3</b></td>
-                                    <td><b>2.3</b></td>
                                 </tr>
                                 <tr>
                                     <td>Visual Memory</td>
@@ -303,9 +414,6 @@
                                     </td>
                                     <td><b>402</b> ms</td>
                                     <td><b>2.3</b> %</td>
-                                    <td><b>2.3</b></td>
-                                    <td><b>2.3</b></td>
-                                    <td><b>2.3</b></td>
                                 </tr>
                                 <tr>
                                     <td>Number Memory</td>
@@ -317,9 +425,6 @@
                                     </td>
                                     <td><b>402</b> ms</td>
                                     <td><b>2.3</b> %</td>
-                                    <td><b>2.3</b></td>
-                                    <td><b>2.3</b></td>
-                                    <td><b>2.3</b></td>
                                 </tr>
                                 <tr>
                                     <td>Verbal Memory</td>
@@ -331,9 +436,6 @@
                                     </td>
                                     <td><b>402</b> ms</td>
                                     <td><b>2.3</b> %</td>
-                                    <td><b>2.3</b></td>
-                                    <td><b>2.3</b></td>
-                                    <td><b>2.3</b></td>
                                 </tr>
                                 <tr>
                                     <td>Typing</td>
@@ -345,9 +447,6 @@
                                     </td>
                                     <td><b>402</b> ms</td>
                                     <td><b>2.3</b> %</td>
-                                    <td><b>2.3</b></td>
-                                    <td><b>2.3</b></td>
-                                    <td><b>2.3</b></td>
                                 </tr>
                                 <tr>
                                     <td>Aim Trainer</td>
@@ -359,9 +458,6 @@
                                     </td>
                                     <td><b>402</b> ms</td>
                                     <td><b>2.3</b> %</td>
-                                    <td><b>2.3</b></td>
-                                    <td><b>2.3</b></td>
-                                    <td><b>2.3</b></td>
                                 </tr>
                                 <tr>
                                     <td>Chimp Test</td>
@@ -373,9 +469,6 @@
                                     </td>
                                     <td><b>402</b> ms</td>
                                     <td><b>2.3</b> %</td>
-                                    <td><b>2.3</b></td>
-                                    <td><b>2.3</b></td>
-                                    <td><b>2.3</b></td>
                                 </tr>
                                 <tr>
                                     <td>Sequence Memory</td>
@@ -387,9 +480,6 @@
                                     </td>
                                     <td><b>402</b> ms</td>
                                     <td><b>2.3</b> %</td>
-                                    <td><b>2.3</b></td>
-                                    <td><b>2.3</b></td>
-                                    <td><b>2.3</b></td>
                                 </tr>
                                
                                 </tbody>
@@ -411,14 +501,12 @@
 @endpush
 
 @push('custom-scripts')
-    <script src="{{ asset('/sw.js') }}"></script>
     <script>
-        if ('serviceWorker' in navigator) {
-            if (!navigator.serviceWorker.controller) {
-                navigator.serviceWorker.register("/sw.js").then(function (reg) {
-                    console.log("Service worker has been registered for scope: " + reg.scope);
-                });
-            }
-        }
+        $(document).ready(function(){
+            $('.startNow').on('click',function(){
+                // $(this).text('Please Wait...');
+                window.location.href = "{{ route('reaction-test') }}";
+            })
+        })
     </script>
 @endpush

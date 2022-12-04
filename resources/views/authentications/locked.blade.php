@@ -41,7 +41,7 @@
                         <div class="slider-half">
                             <div class="slide-content">
                                 <div class="top-sign-up ">
-                                    <div class="about-comp text-white mt-2">{{__('Human Bench')}}</div>
+                                    <div class="about-comp text-white mt-2">{{__('QUEST VITALITY')}}</div>
                                     <div class="for-sign-up">
                                         <p class="text-white font-12 mt-2 font-weight-300">{{__('Don\'t have an account ?')}}</p>
                                         <a href="{{url('/signup')}}">{{__('Sign Up')}}</a>

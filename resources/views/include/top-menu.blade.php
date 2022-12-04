@@ -7,8 +7,8 @@
                 <span>{{__('Dashboard')}}</span>
             </a>
         </li>
-        <li class="menu  main-single-menu">
-            <a href="{{ url('/') }}" class="dropdown-toggle">
+        <li class="menu {{ active_class(['reaction-time']) }} main-single-menu">
+            <a href="{{ url('/reaction-time') }}" class="dropdown-toggle">
                 <i class="las la-clock"></i>
                 <span>{{__('Reaction Time')}}</span>
             </a>

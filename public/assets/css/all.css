@@ -2354,7 +2354,7 @@ code { color: #e7515a; }
 }
 .navbar .theme-brand li.theme-text a {
     font-size: 24px !important;
-    color: #2262c6 !important;
+    color: white !important;
     line-height: 2.75rem;
     padding: 0 0.8rem;
     text-transform: initial;
@@ -4048,7 +4048,7 @@ body.darkmode {
     color: #ffffff;
 }
 .navbar .theme-brand li.theme-text a {
-    color: #2262c6 !important;
+    color: white !important;
 }
 .darkmode h1, .darkmode h2, .darkmode h3, .darkmode h4, .darkmode h5, .darkmode h6 {
     color: #ffffff;
@@ -5574,4 +5574,11 @@ body.darkmode.gu-unselectable .media.drag-type-3 .media-body h6 {
 
 .darkmode .widget-content-area {
     background-color: #272727;
+}
+
+h1,h2,h3,h4,h5,h6,p,span,strong{
+    font-family: 'Montserrat' !important;
+}
+.text-white{
+    color: white;
 }

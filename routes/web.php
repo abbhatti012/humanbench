@@ -23,6 +23,9 @@ Route::get('locked', function () { return view('authentications.locked'); });
 Route::get('forgot-password', function () { return view('authentications.forgot-password'); });
 Route::get('confirm-email', function () { return view('authentications.confirm-email'); });
 
+Route::get('reaction-time', function () { return view('front.reaction-time'); });
+Route::get('reaction-test', function () { return view('front.reaction-test'); })->name('reaction-test');
+
 // For Clear cache
 Route::get('/clear-cache', function() {
     Artisan::call('cache:clear');

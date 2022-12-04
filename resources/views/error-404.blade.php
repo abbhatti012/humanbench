@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
-    <title>Human Bench Error 404 2 | Human Bench - Multipurpose Bootstrap Admin Template </title>
+    <title>QUEST VITALITY Error 404 2 | QUEST VITALITY - Multipurpose Bootstrap Admin Template </title>
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon.ico') }}" />
     <!-- Common Styles Starts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
@@ -25,7 +25,7 @@
 <!-- Main Body Starts -->
 <div class="error-wrapper">
     <div class="col-md-6 error-left-section">
-        <a class="navbar-brand" href="/">Human Bench</a>
+        <a class="navbar-brand" href="/">QUEST VITALITY</a>
         <div class="error-left-content">
             <h1 class="mb-3 text-white">{{__('Oops!')}}</h1>
             <p class="font-25 mb-5 text-white">{{__('Sorry, We can\'t seem to find the page you\'re looking for.')}}</p>
@@ -44,7 +44,7 @@
 <!-- Footer Starts -->
 <div class="faq-footer">
     <div class="d-flex align-items-center justify-content-between">
-        <p class="">{{__('Copyright © 2021')}} <a target="_blank" href="javascript:void(0)">Human Bench Web</a> {{__('| All rights reserved.')}}</p>
+        <p class="">{{__('Copyright © 2021')}} <a target="_blank" href="javascript:void(0)">QUEST VITALITY Web</a> {{__('| All rights reserved.')}}</p>
         <p class="">{{__('Crafted with extra')}} <i class="las la-heart text-danger"></i></p>
     </div>
 </div>

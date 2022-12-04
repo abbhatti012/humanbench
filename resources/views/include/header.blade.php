@@ -6,7 +6,7 @@
             </a>
         </li>
         <li class="nav-item theme-text">
-            <a href="{{ url('/') }}" class="nav-link"> Human Bench </a>
+            <a href="{{ url('/') }}" class="text-white" style="font-family: Futura Medium;"><img width="240" src="{{ url('assets/img/quest.png') }}" class="navbar-logo" alt="logo"></a>
         </li>
     </ul>
     <ul class="navbar-item flex-row ml-md-0 ml-auto">
@@ -20,11 +20,11 @@
         </li>
     </ul>
     <ul class="navbar-item flex-row ml-md-auto">
-        <li class="nav-item dropdown  fullscreen-dropdown">
+        <!-- <li class="nav-item dropdown  fullscreen-dropdown">
             <a class="nav-link night-light-mode"  href="javascript:void(0);">
-                <i class="las la-moon"id="darkModeIcon"></i>
+                <i class="las la-sun"id="darkModeIcon"></i>
             </a>
-        </li>
+        </li> -->
         <li class="nav-item dropdown fullscreen-dropdown d-none d-lg-flex">
             <a class="nav-link full-screen-mode" href="javascript:void(0);">
                 <i class="las la-compress" id="fullScreenIcon"></i>
