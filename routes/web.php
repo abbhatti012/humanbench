@@ -12,13 +12,16 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Auth::routes();
 
 Route::get('/', function () {
     return view('dashboard.dashboard');
 });
 
-Route::get('login', function () { return view('authentications.login'); });
-Route::get('signup', function () { return view('authentications.signup'); });
+Route::get('/logout', [App\Http\Controllers\HomeController::class, 'logout'])->name('logout');
+
+// Route::get('login', function () { return view('authentications.login'); });
+// Route::get('signup', function () { return view('authentications.signup'); });
 Route::get('locked', function () { return view('authentications.locked'); });
 Route::get('forgot-password', function () { return view('authentications.forgot-password'); });
 Route::get('confirm-email', function () { return view('authentications.confirm-email'); });
@@ -36,3 +39,5 @@ Route::get('/clear-cache', function() {
 Route::any('/{page?}',function(){
     return View::make('error-404');
 })->where('page','.*');
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -16,6 +16,7 @@
                     <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 p-0">
                         <div class="login-one-start">
                             <form method="POST" id="registerForm" action="{{ route('register') }}">
+                                @csrf
                                 <h6 class="mt-2 text-primary text-center font-20">{{__('Sign Up')}}</h6>
                                 <p class="text-center text-muted mt-3 mb-3 font-14">{{__('Fill up and create an account')}}</p>
                                 <div class="login-one-inputs mt-5">

@@ -14,30 +14,29 @@
             <div class="p-30 h-100" >
                 <div class="row main-login-one h-100">
                     <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 p-0">
-                        <form action="{{ route('login') }}" method="POST">
-                            @csrf
-                            <div class="login-one-start">
+                        <div class="login-one-start">
+                            <form action="{{ route('login') }}" method="POST">
+                                @csrf
                                 <h6 class="mt-2 text-primary text-center font-20">{{__('Log In')}}</h6>
                                 <p class="text-center text-muted mt-3 mb-3 font-14">{{__('Please Log into your account')}}</p>
                                 <div class="login-one-inputs mt-5">
-                                <input id="email" type="email" class="@error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                    <input id="email" type="email" class="@error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="Your Emai" required autocomplete="email" autofocus>
                                     <i class="las la-user-alt"></i>
+                                    @error('email')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
                                 <div class="login-one-inputs mt-3">
-                                    <input id="password" type="password" class="@error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                    <input id="password" type="password" class="@error('password') is-invalid @enderror" name="password" placeholder="Please Enter Password" required autocomplete="current-password">
                                     <i class="las la-lock"></i>
-
+                                    @error('password')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
                                 <div class="login-one-inputs check mt-4">
                                     <input class="inp-cbx" id="cbx" type="checkbox" style="display: none">
                                     <label class="cbx" for="cbx">
@@ -57,6 +56,7 @@
                                         {{__('LOG IN')}}
                                     </button>
                                 </div>
+                                </form>
                                 @if (Route::has('password.request'))
                                 <div class="login-one-inputs mt-4 text-center font-12 strong">
                                     <a href="{{ route('password.request') }}" class="text-primary">{{__('Forgot your Password ?')}}</a>
@@ -70,8 +70,7 @@
                                         </a></div>
                                 </div>
                             </div>
-                        </form>
-                    </div>
+                        </div>
                     <div class="col-xl-8 col-lg-6 col-md-6 d-none d-md-block p-0">
                         <div class="slider-half">
                             <div class="slide-content">

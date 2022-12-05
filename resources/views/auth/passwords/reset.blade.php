@@ -21,26 +21,41 @@
                                 </div>
                             @endif
                             <h6 class="mt-2 text-primary text-center font-20">{{__('Forget Password ?')}}</h6>
-                            <form method="POST" action="{{ route('password.email') }}">
+                            <form method="POST" action="{{ route('password.update') }}">
                                 @csrf
+                                <input type="hidden" name="token" value="{{ $token }}">
                                 <div class="form-1">
-                                    <p class="text-center text-muted mt-3 mb-3 font-14">{{__('Enter you email address below')}}</p>
+                                    <p class="text-center text-muted mt-3 mb-3 font-14">{{__('Email Address')}}</p>
                                     <div class="login-one-inputs mt-5">
-                                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="Please Enter Your Email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="Please Enter Your Email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
+                                        <i class="las la-envelope"></i>
 
                                         @error('email')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
-                                        <i class="las la-envelope"></i>
+                                    </div>
+                                    <div class="login-one-inputs mt-5">
+                                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="New Password" required autocomplete="new-password">
+                                        <i class="las la-lock"></i>
+
+                                        @error('password')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div class="login-one-inputs mt-5">
+                                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required placeholder="Confirm New Password" autocomplete="new-password">
+                                        <i class="las la-lock"></i>
                                     </div>
                                     <div class="login-one-inputs mt-4">
                                         <button class="ripple-button ripple-button-primary btn-lg btn-login" type="submit">
                                             <div class="ripple-ripple js-ripple">
                                                 <span class="ripple-ripple__circle"></span>
                                             </div>
-                                            {{__('Get Validation Code')}}
+                                            {{__('Reset Password')}}
                                         </button>
                                     </div>
                                 </div>
