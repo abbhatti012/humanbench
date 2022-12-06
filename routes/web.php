@@ -14,17 +14,15 @@
 */
 Auth::routes();
 
-Route::get('/', function () {
-    return view('dashboard.dashboard');
-});
+Route::get('/', [App\Http\Controllers\HomeController::class, 'dashboard']);
 
 Route::get('/logout', [App\Http\Controllers\HomeController::class, 'logout'])->name('logout');
 
 // Route::get('login', function () { return view('authentications.login'); });
 // Route::get('signup', function () { return view('authentications.signup'); });
-Route::get('locked', function () { return view('authentications.locked'); });
-Route::get('forgot-password', function () { return view('authentications.forgot-password'); });
-Route::get('confirm-email', function () { return view('authentications.confirm-email'); });
+// Route::get('locked', function () { return view('authentications.locked'); });
+// Route::get('forgot-password', function () { return view('authentications.forgot-password'); });
+// Route::get('confirm-email', function () { return view('authentications.confirm-email'); });
 
 Route::get('reaction-time', function () { return view('front.reaction-time'); });
 Route::get('reaction-test', function () { return view('front.reaction-test'); })->name('reaction-test');
@@ -34,6 +32,9 @@ Route::get('/clear-cache', function() {
     Artisan::call('cache:clear');
     return "Cache is cleared";
 });
+Route::get('/profile', [App\Http\Controllers\HomeController::class, 'profile'])->name('profile');
+Route::post('/save-profile', [App\Http\Controllers\HomeController::class, 'save_profile'])->name('save-profile');
+Route::post('/change-password', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('update-password');
 
 // 404 for undefined routes
 Route::any('/{page?}',function(){

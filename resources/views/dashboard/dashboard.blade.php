@@ -12,6 +12,12 @@
     <link rel="apple-touch-icon" href="{{ asset('b.png') }}">
     <link rel="manifest" href="{{ asset('/manifest.json') }}">
 
+    <style>
+        .img-thumbnail{
+            width: 134px;
+            height: 134px;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -215,9 +221,19 @@
                     <div class="d-flex justify-content-end mb-4">
                     </div>
                     <div class="text-center mb-4">
-                        <img src="{{ asset('assets/img/profile-21.jpg') }}" alt="Avatar" class="img-thumbnail rounded-circle mb-3">
-                        <h5 class="mb-0 stronger"> Guest User</h5>
-                        <a class="text-primary" href="#">@oliver_murphy</a>
+                        @if($user)
+                            @if($user->avatar)
+                                <img src="{{ asset($user->avatar) }}" alt="{{ $user->name }}" class="img-thumbnail rounded-circle mb-3">
+                            @else
+                                <img src="{{ asset('assets/img/profile-21.jpg') }}" alt="{{ $user->name }}" class="img-thumbnail rounded-circle mb-3">
+                            @endif
+                            <h5 class="mb-0 stronger">{{ $user->name }}</h5>
+                            <a class="text-primary" href="{{ route('profile') }}">@<?php echo str_replace(" ","_",$user->name); ?></a>
+                        @else
+                            <img src="{{ asset('assets/img/profile-21.jpg') }}" alt="Avatar" class="img-thumbnail rounded-circle mb-3">
+                            <h5 class="mb-0 stronger">Guest</h5>
+                            <a class="text-primary" href="javascript:void(0)">@<span>guest</span></a>
+                        @endif
                         <div class="d-flex justify-content-center align-items-center mt-4">
                             <div class="dash-followers mr-4">
                                 <div class="d-flex justify-content-center align-items-center">

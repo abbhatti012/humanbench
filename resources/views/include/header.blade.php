@@ -114,33 +114,48 @@
             </div>
         </li>
         <li class="nav-item dropdown user-profile-dropdown">
-            <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="userProfileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <img src="{{ url('assets/img/profile-21.jpg') }}" alt="avatar">
-            </a>
+            @guest
+                <a href="{{ route('login') }}" class="nav-link user" aria-haspopup="true" aria-expanded="true">
+                    <img src="{{ url('assets/img/profile-21.jpg') }}" alt="avatar">
+                </a>
+            @else
+            @if(Auth::user()->avatar)
+                <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="userProfileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <img src="{{ asset(Auth::user()->avatar) }}" alt="avatar">
+                </a>
+            @else
+                <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="userProfileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <img src="{{ url('assets/img/profile-21.jpg') }}" alt="avatar">
+                </a>
+            @endif
             <div class="dropdown-menu position-absolute" aria-labelledby="userProfileDropdown">
                 <div class="nav-drop is-account-dropdown" >
                     <div class="inner">
                         <div class="nav-drop-header">
-                            <span class="text-primary font-15">{{ __('Welcome') }} User !</span>
+                            <span class="text-primary font-15">{{ __('Welcome') }} {{ Auth::user()->name }} !</span>
                         </div>
                         <div class="nav-drop-body account-items pb-0">
-                            <a id="profile-link"  class="account-item" href="{{ url('/pages/profile') }}">
+                            <a id="profile-link"  class="account-item" href="{{ route('profile') }}">
                                 <div class="media align-center">
                                     <div class="media-left">
                                         <div class="image">
+                                        @if(Auth::user()->avatar)
+                                            <img class="rounded-circle avatar-xs" src="{{ asset(Auth::user()->avatar) }}" alt="">
+                                        @else
                                             <img class="rounded-circle avatar-xs" src="{{ url('assets/img/profile-21.jpg') }}" alt="">
+                                        @endif
                                         </div>
                                     </div>
                                     <div class="media-content ml-3">
-                                        <h6 class="font-13 mb-0 strong">John Doe</h6>
-                                        <small>john@gmail.com</small>
+                                        <h6 class="font-13 mb-0 strong">{{ Auth::user()->name }}</h6>
+                                        <small>{{ Auth::user()->email }}</small>
                                     </div>
                                     <div class="media-right">
                                         <i data-feather="check"></i>
                                     </div>
                                 </div>
                             </a>
-                            <a class="account-item" href="{{ url('/pages/profile') }}">
+                            <a class="account-item" href="{{ route('profile') }}">
                                 <div class="media align-center">
                                     <div class="icon-wrap">
                                         <i class="las la-user font-20"></i>
@@ -150,7 +165,7 @@
                                     </div>
                                 </div>
                             </a>
-                           
+                        
                             <hr class="account-divider">
                             <div style="margin-left: 19px;" class="media align-center">
                                 <div class="icon-wrap">
@@ -164,6 +179,7 @@
                     </div>
                 </div>
             </div>
+            @endguest
         </li>
     </ul>
     
