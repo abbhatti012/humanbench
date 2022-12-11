@@ -78,7 +78,7 @@
                                     <div class="about-comp text-white mt-2">{{__('QUEST VITALITY')}}</div>
                                     <div class="for-sign-up">
                                         <p class="text-white font-12 mt-2 font-weight-300">{{__('Don\'t have an account ?')}}</p>
-                                        <a href="{{url('/signup')}}">{{__('Sign Up')}}</a>
+                                        <a href="{{url('/register')}}">{{__('Sign Up')}}</a>
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>

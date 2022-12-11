@@ -14,9 +14,11 @@
 */
 Auth::routes();
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'dashboard']);
+Route::get('/', [App\Http\Controllers\HomeController::class, 'dashboard'])->name('dashboard');
+Route::post('/', [App\Http\Controllers\HomeController::class, 'dashboard'])->name('dashboard');
 
 Route::get('/logout', [App\Http\Controllers\HomeController::class, 'logout'])->name('logout');
+Route::post('/save-reaction-score', [App\Http\Controllers\HomeController::class, 'save_reaction_score'])->name('save-reaction-score');
 
 // Route::get('login', function () { return view('authentications.login'); });
 // Route::get('signup', function () { return view('authentications.signup'); });
@@ -24,7 +26,7 @@ Route::get('/logout', [App\Http\Controllers\HomeController::class, 'logout'])->n
 // Route::get('forgot-password', function () { return view('authentications.forgot-password'); });
 // Route::get('confirm-email', function () { return view('authentications.confirm-email'); });
 
-Route::get('reaction-time', function () { return view('front.reaction-time'); });
+Route::get('/reaction-time', [App\Http\Controllers\HomeController::class, 'reaction_time'])->name('reaction-time');
 Route::get('reaction-test', function () { return view('front.reaction-test'); })->name('reaction-test');
 
 // For Clear cache

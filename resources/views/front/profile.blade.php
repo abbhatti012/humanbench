@@ -5,7 +5,11 @@
     {!! Html::style('plugins/dropify/dropify.min.css') !!}
     {!! Html::style('assets/css/pages/profile_edit.css') !!}
 @endpush
-
+<style>
+    option{
+        background-color: black;
+    }
+</style>
 @section('content')
     <!--  Navbar Starts / Breadcrumb Area  -->
     <div class="sub-header-container">
@@ -74,6 +78,21 @@
                                                                             <div class="form-group">
                                                                                 <label for="fullName">{{__('Full Name')}}</label>
                                                                                 <input type="text" class="form-control mb-4" name="name" placeholder="{{__('Your Full Name')}}" value="{{ Auth::user()->name }}">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-sm-12">
+                                                                            <div class="form-group">
+                                                                                <label for="age">{{__('Age')}}</label>
+                                                                                <input type="number" class="form-control mb-4" name="age" placeholder="{{__('Your Age')}}" min="18" value="{{ Auth::user()->age }}" required>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-sm-12">
+                                                                            <div class="form-group">
+                                                                                <label for="gender">{{__('Gender')}}</label>
+                                                                                <select name="gender" class="form-control mb-4">
+                                                                                    <option <?php if($user->gender == 'male'){echo 'selected';} ?> value="male">Male</option>
+                                                                                    <option <?php if($user->gender == 'female'){echo 'selected';} ?> value="female">Female</option>
+                                                                                </select>
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-sm-12">

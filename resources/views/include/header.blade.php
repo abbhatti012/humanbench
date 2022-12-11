@@ -54,7 +54,7 @@
             </div>
         </li>
       
-        <li class="nav-item dropdown notification-dropdown">
+        <!-- <li class="nav-item dropdown notification-dropdown">
             <a href="javascript:void(0);" class="nav-link dropdown-toggle position-relative" id="notificationDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="las la-bell"></i>
                 <div class="blink">
@@ -112,7 +112,7 @@
                     </div>
                 </div>
             </div>
-        </li>
+        </li> -->
         <li class="nav-item dropdown user-profile-dropdown">
             @guest
                 <a href="{{ route('login') }}" class="nav-link user" aria-haspopup="true" aria-expanded="true">

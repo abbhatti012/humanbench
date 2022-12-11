@@ -72,10 +72,14 @@
                                 </div>
                                 <div class="login-one-inputs mt-5 check">
                                     <input class="inp-cbx" id="cbx" type="checkbox" style="display: none"/>
-                                    <label class="cbx" for="cbx"><span>
-                                    <svg width="12px" height="10px" viewbox="0 0 12 10">
-                                    <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
-                                    </svg></span><span class="font-13">{{__('I agree to the')}} <a class="text-primary" href="javascript:void(0)" target="_blank">{{__('terms and policies')}}</a></span></label>
+                                    <label class="cbx" for="cbx">
+                                    <span>
+                                        <svg width="12px" height="10px" viewbox="0 0 12 10">
+                                            <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                        </svg>
+                                    </span>
+                                        <p class="font-13 text-muted mt-3 mb-3 font-14">I agree to the<a class="text-primary" href="javascript:void(0)" target="_blank">{{__('terms and policies')}}</a></p>
+                                    </label>
                                 </div>
                                 <div class="login-one-inputs mt-4">
                                     <button class="ripple-button ripple-button-primary btn-lg btn-login" type="button" onclick="ValidateCaptcha();">

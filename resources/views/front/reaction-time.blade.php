@@ -296,26 +296,9 @@
             </style> -->
 
             <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
-                <div class="widget widget-chart-one">
+            <div id="Average Report" class="widget widget-chart-one">
                     <div class="widget-heading">
                         <h5 class=""> {{ __('Average Reports') }}</h5>
-                        <ul class="tabs tab-pills">
-                            <li>
-                                <div class="dropdown  custom-dropdown-icon">
-                                    <a class="dropdown-toggle" href="#" role="button" id="customDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span> {{ __('Filter By Test') }}</span> <i class="las la-angle-down"></i></a>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="customDropdown">
-                                        <a class="dropdown-item" href="javascript:void(0);"> {{ __('Reaction Time') }}</a>
-                                        <a class="dropdown-item" href="javascript:void(0);"> {{ __('Visual Memory') }}</a>
-                                        <a class="dropdown-item" href="javascript:void(0);"> {{ __('Number Memory') }}</a>
-                                        <a class="dropdown-item" href="javascript:void(0);"> {{ __('Verbal Memory') }}</a>
-                                        <a class="dropdown-item" href="javascript:void(0);"> {{ __('Typing') }}</a>
-                                        <a class="dropdown-item" href="javascript:void(0);"> {{ __('Aim Trainer') }}</a>
-                                        <a class="dropdown-item" href="javascript:void(0);"> {{ __('Chimp Test') }}</a>
-                                        <a class="dropdown-item" href="javascript:void(0);"> {{ __('Sequence Memory') }}</a>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
                     </div>
                     <div class="widget-content">
                         <div class="tabs tab-content">
@@ -362,18 +345,22 @@
                     <hr>
                     <h6 class="mt-4">
                         <span> Joined</span>
-                        <small class="ml-1"> 11 Hours ago</small>
+                        @if($user)
+                            <small class="ml-1">{{ date("F j, Y, g:i a",strtotime($user->created_at))  }}</small>
+                        @else
+                            <small class="ml-1">{{ date("F j, Y, g:i a",strtotime(date("Y/m/d")))  }}</small>
+                        @endif
                     </h6>
                     <div class="progress mb-0">
-                        <div role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-light-primary text-primary font-11 strong" style="width: 30%;"> 30%</div>
-                        <div role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-light-success text-success-teal font-11 strong" style="width: 20%;"> 20%</div>
-                        <div role="progressbar" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-light-info text-info font-11 strong" style="width: 35%;"> 35%</div>
+                        <div role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-light-primary text-primary font-11 strong" style="width: 100%;"></div>
+                        <!-- <div role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-light-success text-success-teal font-11 strong" style="width: 20%;"> 20%</div> -->
+                        <!-- <div role="progressbar" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-light-info text-info font-11 strong" style="width: 35%;"> 35%</div> -->
                     </div>
                 </div>
             </div>
           
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
-                <div class="widget dashboard-table">
+                <div id="dashboard-table" class="widget dashboard-table">
                     <div class="widget-heading">
                         <h5 class=""> {{__('Recent Activities')}}</h5>
                         <div class="dropdown custom-dropdown-icon">
@@ -388,100 +375,25 @@
                                     <th><div class="th-content"> {{__('Test')}}</div></th>
                                     <th><div class="th-content"> {{__('Test Now')}}</div></th>
                                     <th><div class="th-content"> {{__('Stats')}}</div></th>
-                                    <th><div class="th-content"> {{__('Score')}}</div></th>
-                                    <th><div class="th-content"> {{__('Percentile')}}</div></th>
+                                    <th><div class="th-content"> {{__('Score')}}(<i class="fa fa-info" title="Average of last five score"></i>)</div></th>
+                                    <th><div class="th-content"> {{__('Percentile')}}(<i class="fa fa-info" title="Percentile from average last five score"></i>)</div></th>
                                 </tr>
                                 </thead>
                                 <tbody>
+                                @forelse($reactions as $reaction)
                                 <tr>
                                     <td>Reaction Time</td>
                                     <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-muted" title="Test Now"><i class="las la-play"></i> Test Now</a>
+                                        <a href="{{ route('reaction-test') }}" class="bs-tooltip font-20 text-muted" title="Test Now"><i class="las la-play"></i> Test Now</a>
                                     </td>
                                     <td>
                                         <a href="javascript:void(0);" class="bs-tooltip font-20 text-primary ml-2" title="{{__('Stats')}}"><i class="las la-map"></i> Stats</a>
                                     </td>
-                                    <td><b>402</b> ms</td>
-                                    <td><b>2.3</b> %</td>
+                                    <td><b>{{ $reaction->last_score }}</b> ms</td>
+                                    <td><b>{{ $reaction->percentile }}</b></td>
                                 </tr>
-                                <tr>
-                                    <td>Visual Memory</td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-muted" title="Test Now"><i class="las la-play"></i> Test Now</a>
-                                    </td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-primary ml-2" title="{{__('Stats')}}"><i class="las la-map"></i> Stats</a>
-                                    </td>
-                                    <td><b>402</b> ms</td>
-                                    <td><b>2.3</b> %</td>
-                                </tr>
-                                <tr>
-                                    <td>Number Memory</td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-muted" title="Test Now"><i class="las la-play"></i> Test Now</a>
-                                    </td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-primary ml-2" title="{{__('Stats')}}"><i class="las la-map"></i> Stats</a>
-                                    </td>
-                                    <td><b>402</b> ms</td>
-                                    <td><b>2.3</b> %</td>
-                                </tr>
-                                <tr>
-                                    <td>Verbal Memory</td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-muted" title="Test Now"><i class="las la-play"></i> Test Now</a>
-                                    </td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-primary ml-2" title="{{__('Stats')}}"><i class="las la-map"></i> Stats</a>
-                                    </td>
-                                    <td><b>402</b> ms</td>
-                                    <td><b>2.3</b> %</td>
-                                </tr>
-                                <tr>
-                                    <td>Typing</td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-muted" title="Test Now"><i class="las la-play"></i> Test Now</a>
-                                    </td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-primary ml-2" title="{{__('Stats')}}"><i class="las la-map"></i> Stats</a>
-                                    </td>
-                                    <td><b>402</b> ms</td>
-                                    <td><b>2.3</b> %</td>
-                                </tr>
-                                <tr>
-                                    <td>Aim Trainer</td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-muted" title="Test Now"><i class="las la-play"></i> Test Now</a>
-                                    </td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-primary ml-2" title="{{__('Stats')}}"><i class="las la-map"></i> Stats</a>
-                                    </td>
-                                    <td><b>402</b> ms</td>
-                                    <td><b>2.3</b> %</td>
-                                </tr>
-                                <tr>
-                                    <td>Chimp Test</td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-muted" title="Test Now"><i class="las la-play"></i> Test Now</a>
-                                    </td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-primary ml-2" title="{{__('Stats')}}"><i class="las la-map"></i> Stats</a>
-                                    </td>
-                                    <td><b>402</b> ms</td>
-                                    <td><b>2.3</b> %</td>
-                                </tr>
-                                <tr>
-                                    <td>Sequence Memory</td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-muted" title="Test Now"><i class="las la-play"></i> Test Now</a>
-                                    </td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-primary ml-2" title="{{__('Stats')}}"><i class="las la-map"></i> Stats</a>
-                                    </td>
-                                    <td><b>402</b> ms</td>
-                                    <td><b>2.3</b> %</td>
-                                </tr>
-                               
+                                @empty
+                                @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -497,7 +409,7 @@
     {!! Html::script('assets/js/loader.js') !!}
     {!! Html::script('plugins/apex/apexcharts.min.js') !!}
     {!! Html::script('plugins/flatpickr/flatpickr.js') !!}
-    {!! Html::script('assets/js/dashboard/dashboard_1.js') !!}
+    <!-- {!! Html::script('assets/js/dashboard/dashboard_1.js') !!} -->
 @endpush
 
 @push('custom-scripts')
@@ -508,5 +420,267 @@
                 window.location.href = "{{ route('reaction-test') }}";
             })
         })
+    </script>
+    <script>
+        (function($) {
+            $(document).on('click','.redirectTo',function(){
+                var route = $(this).data('route');
+                window.location.href = "/"+route;
+            })
+            "use strict";
+            try {
+                var options = {
+                    chart: {
+                        fontFamily: 'Poppins, sans-serif',
+                        height: 320,
+                        type: 'area',
+                        zoom: {
+                            enabled: false
+                        },
+                        dropShadow: {
+                            enabled: true,
+                            opacity: 0.2,
+                            blur: 5,
+                            left: -7,
+                            top: 22
+                        },
+                        toolbar: {
+                            show: false
+                        },
+                        events: {
+                            mounted: function(ctx, config) {
+                                const highest1 = ctx.getHighestValueInSeries(0);
+                                const highest2 = ctx.getHighestValueInSeries(1);
+                                ctx.addPointAnnotation({
+                                    x: new Date(ctx.w.globals.seriesX[0][ctx.w.globals.series[0].indexOf(highest1)]).getTime(),
+                                    y: highest1,
+                                    label: {
+                                        style: {
+                                            cssClass: 'd-none'
+                                        }
+                                    },
+                                    customSVG: {
+                                        SVG: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="#009688" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle"><circle cx="12" cy="12" r="10"></circle></svg>',
+                                        cssClass: undefined,
+                                        offsetX: -8,
+                                        offsetY: 5
+                                    }
+                                })
+                                ctx.addPointAnnotation({
+                                    x: new Date(ctx.w.globals.seriesX[1][ctx.w.globals.series[1].indexOf(highest2)]).getTime(),
+                                    y: highest2,
+                                    label: {
+                                        style: {
+                                            cssClass: 'd-none'
+                                        }
+                                    },
+                                    customSVG: {
+                                        SVG: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="#e7515a" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle"><circle cx="12" cy="12" r="10"></circle></svg>',
+                                        cssClass: undefined,
+                                        offsetX: -8,
+                                        offsetY: 5
+                                    }
+                                })
+                            },
+                        }
+                    },
+                    colors: ['#009688', '#e7515a'],
+                    dataLabels: {
+                        enabled: false
+                    },
+                    markers: {
+                        discrete: [{
+                            seriesIndex: 0,
+                            dataPointIndex: 7,
+                            fillColor: '#000',
+                            strokeColor: '#000',
+                            size: 5
+                        }, {
+                            seriesIndex: 2,
+                            dataPointIndex: 11,
+                            fillColor: '#000',
+                            strokeColor: '#000',
+                            size: 4
+                        }]
+                    },
+                    subtitle: {
+                        text: '',
+                        align: 'left',
+                        margin: 0,
+                        offsetX: -10,
+                        offsetY: 35,
+                        floating: false,
+                        style: {
+                            fontSize: '14px',
+                            color:  '#888ea8'
+                        }
+                    },
+                    title: {
+                        text: '',
+                        align: 'left',
+                        margin: 0,
+                        offsetX: -10,
+                        offsetY: 0,
+                        floating: false,
+                        style: {
+                            fontSize: '25px',
+                            color:  '#515365'
+                        },
+                    },
+                    stroke: {
+                        show: true,
+                        curve: 'smooth',
+                        width: 2,
+                        lineCap: 'square'
+                    },
+                    series: [{
+                        name: 'Average Score Per Day',
+                        data: [
+                            <?php foreach($graph_data['statAverageTime'] as $par): ?>
+                                "<?php echo $par; ?>",
+                            <?php endforeach; ?>
+                        ]
+                    }, {
+                        name: 'Percentile Per Day',
+                        data: [
+                            <?php foreach($graph_data['statPercentile'] as $percent): ?>
+                                <?= $percent ?>,
+                            <?php endforeach; ?>
+                        ]
+                    }],
+                    labels: [
+                        <?php foreach($graph_data['statLabel'] as $label): ?>
+                            "<?php echo $label; ?>",
+                        <?php endforeach; ?>
+                    ],
+                    xaxis: {
+                        axisBorder: {
+                            show: false
+                        },
+                        axisTicks: {
+                            show: false
+                        },
+                        crosshairs: {
+                            show: true
+                        },
+                        labels: {
+                            offsetX: 0,
+                            offsetY: 5,
+                            style: {
+                                fontSize: '12px',
+                                fontFamily: 'Poppins, sans-serif',
+                                cssClass: 'apexcharts-xaxis-title',
+                            },
+                        }
+                    },
+                    yaxis: {
+                        labels: {
+                            formatter: function(value, index) {
+                                // return (value / 1000) + 'K'
+                                return value;
+                            },
+                            offsetX: -22,
+                            offsetY: 0,
+                            style: {
+                                fontSize: '12px',
+                                fontFamily: 'Poppins, sans-serif',
+                                cssClass: 'apexcharts-yaxis-title',
+                            },
+                        }
+                    },
+                    grid: {
+                        borderColor: '#e0e6ed',
+                        strokeDashArray: 8,
+                        xaxis: {
+                            lines: {
+                                show: true
+                            }
+                        },
+                        yaxis: {
+                            lines: {
+                                show: true,
+                            }
+                        },
+                        padding: {
+                            top: 0,
+                            right: 0,
+                            bottom: 0,
+                            left: -10
+                        },
+                    },
+                    legend: {
+                        position: 'top',
+                        horizontalAlign: 'right',
+                        offsetY: -50,
+                        fontSize: '13px',
+                        fontFamily: 'Poppins, sans-serif',
+                        markers: {
+                            width: 10,
+                            height: 10,
+                            strokeWidth: 0,
+                            strokeColor: '#fff',
+                            fillColors: undefined,
+                            radius: 12,
+                            onClick: undefined,
+                            offsetX: 0,
+                            offsetY: 0
+                        },
+                        itemMargin: {
+                            horizontal: 0,
+                            vertical: 20
+                        }
+                    },
+                    tooltip: {
+                        theme: 'dark',
+                        marker: {
+                            show: true,
+                        },
+                        x: {
+                            show: false,
+                        }
+                    },
+                    fill: {
+                        type:"gradient",
+                        gradient: {
+                            type: "vertical",
+                            shadeIntensity: 1,
+                            inverseColors: !1,
+                            opacityFrom: .28,
+                            opacityTo: .05,
+                            stops: [45, 100]
+                        }
+                    },
+                    responsive: [{
+                        breakpoint: 575,
+                        options: {
+                            legend: {
+                                offsetY: -30,
+                            },
+                        },
+                    }]
+                }
+               
+                document.getElementById('transactionsMonthly').innerHTML = '';
+                var chart1 = new ApexCharts(
+                    document.querySelector("#transactionsMonthly"),
+                    options
+                );
+                chart1.render();
+
+                $(document).ready(function(){
+                    $("#showToDoinput").on('click', function(){
+                        $("#toDoInputContainer").slideToggle();
+                    });
+                });
+                /*************************** Other Script ************************** /
+                 /* Date Range Picker */
+                var f3 = flatpickr(document.getElementById('rangeCalendarFlatpickr'), {
+                    mode: "range",
+                });
+            } catch(e) {
+                console.log(e);
+            }
+            })(jQuery);
+
     </script>
 @endpush

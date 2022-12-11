@@ -80,9 +80,9 @@
                         <p class="fs-1" id="attemptscore">0</p>
                         <p>You can retry this attempt and improve your results or navigate to the next attempt</p>
                         <div class="d-flex justify-content-center">
-                            <div class="btn btn-danger mx-3 px-3 retry" id="retryattempt"><img class="mx-2" src="{{ asset('assets/img/refresh.svg') }}" alt="retry" width="15" height="15">Retry</div>
-                            <div class="btn btn-success mx-3 px-3 next" id="nextattempt">Next<img class="mx-2" src="{{ asset('assets/img/next.svg') }}" alt="next" width="15" height="15"></div>
-                            <div class="btn btn-success mx-3 px-3 save" id="saveatempt">Save<img class="mx-2" src="{{ asset('assets/img/next.svg') }}" alt="next" width="15" height="15"></div>
+                            <button class="btn btn-danger mx-3 px-3 retry popup-btn" id="retryattempt"><img class="mx-2" src="{{ asset('assets/img/refresh.svg') }}" alt="retry" width="15" height="15">Retry</button>
+                            <button class="btn btn-success mx-3 px-3 next popup-btn" id="nextattempt">Next<img class="mx-2" src="{{ asset('assets/img/next.svg') }}" alt="next" width="15" height="15"></button>
+                            <button class="btn btn-success mx-3 px-3 save popup-btn" id="saveatempt">Save<img class="mx-2" src="{{ asset('assets/img/next.svg') }}" alt="next" width="15" height="15"></button>
                         </div>
                     </div>
                 </div>
@@ -395,8 +395,8 @@
                     clearInterval(msTimer);
                 } else { 
                     milliseconds += 10;
+                    msTimer = setTimeout(setMs, 10);
                 }
-                msTimer = setTimeout(setMs, 10);
             }
             
             $('#greyDiv').on('click',function(){
@@ -449,9 +449,26 @@
                 restart();
             });
             $('.save').on('click',function(){
+                let score = milliseconds;
                 scores.push(milliseconds);
-                console.log(scores);
+                saveScore(score);
             });
+            function saveScore(score){
+                $('.popup-btn').attr('disabled',true);
+                $.ajax({
+                    type : 'POST',
+                    url : '{{ route("save-reaction-score") }}',
+                    data : {
+                        score : score,
+                        scores : scores,
+                        "_token" : "{{ csrf_token() }}"
+                    },
+                    success : function(data){
+                        $('.popup-btn').attr('disabled',true);
+                        window.location.href = "{{ route('reaction-time') }}/#dashboard-table";
+                    }
+                })
+            }
         })
     </script>
 </body>
