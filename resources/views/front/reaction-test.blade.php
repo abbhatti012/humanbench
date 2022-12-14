@@ -7,7 +7,15 @@
 
 </head>
 <body>
-    
+    <style>
+        .notification{
+            background: red;
+            padding: 12px;
+            color: white;
+            border-radius: 12px;
+            display: none;
+        }
+    </style>
 <div class="uk-position-center">
   <button style="display: none;" class="uk-button uk-button-default uk-border-pill modallumini" href="#modallumini" uk-toggle>Full Screen Modal</button>  
 </div>
@@ -15,6 +23,7 @@
       <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle uk-background-secondary" uk-height-viewport>
             <button class="uk-modal-close-full" type="button" uk-close onclick="history.back()"></button>
             <div class="uk-width-xxlarge uk-padding-large uk-card uk-card-default uk-card-body uk-box-shadow-large">
+                <p class="notification"></p>
                 <section id="level1next" class="mt-5">
                     <div class="d-flex justify-content-center">
                         <div class="text-white text-center">
@@ -381,7 +390,8 @@
                         isGreenClicked = false;
                         setMs();
                     }
-                },random)
+                // },random)
+                },1000)
             }
             function getRandom(){
                 let min = 1;
@@ -420,6 +430,7 @@
                 $('#attemptscore').text(milliseconds+ ' ms');
             })
             $('#redDiv').on('click',function(){
+                $('.notification').css('display','none');
                 restart();
             })
             function restart(){
@@ -454,7 +465,7 @@
                 saveScore(score);
             });
             function saveScore(score){
-                $('.popup-btn').attr('disabled',true);
+                // $('.popup-btn').attr('disabled',true);
                 $.ajax({
                     type : 'POST',
                     url : '{{ route("save-reaction-score") }}',
@@ -464,8 +475,34 @@
                         "_token" : "{{ csrf_token() }}"
                     },
                     success : function(data){
-                        $('.popup-btn').attr('disabled',true);
-                        window.location.href = "{{ route('reaction-time') }}/#dashboard-table";
+                        // $('.popup-btn').attr('disabled',true);
+                        $('#staticBackdrop').hide();
+                        // window.location.href = "{{ route('reaction-time') }}/#dashboard-table";
+                        if(data.status == 'bad'){
+                            $('.notification').css('display','block');
+                            $('.notification').html('You are getting bad today as compared to your last result. Previously you were '+data.data.previous_avg+ ' score and now you are '+data.data.current_avg+'.<br> <a href="{{ route("reaction-time") }}/#dashboard-table">Click here</a> to see your stat result or play again!');
+                        } else if(data.status == 'good') {
+                            $('.notification').css('display','block');
+                            $('.notification').html('You are improving your score today as compared to your last result. Currently you are '+data.data.current_avg+'.<br> <a href="{{ route("reaction-time") }}/#dashboard-table">Click here</a> to see your stat result or play again!');
+                        } else {
+                            $('.notification').css('display','block');
+                            $('.notification').html('<a href="{{ route("reaction-time") }}/#dashboard-table">Click here</a> to see your stat result or play again!');
+                        }
+
+                        isRetry = true;
+                        $('.waitgreen').css('display','none');
+                        $('.tosoon').css('display','block');
+                        $('#greyDiv').css('display','none');
+                        $('#greenDiv').css('display','none');
+                        $('#redDiv').css('display','flex');
+
+                        milliseconds = 0;
+                        trial = 1;
+                        scores = [];
+
+                        $('#attemptlevel').text(trial);
+                        $('.skewX-tab').removeClass('text-white active');
+                        $('.trial'+trial).addClass('text-white active');
                     }
                 })
             }

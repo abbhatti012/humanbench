@@ -17,6 +17,7 @@ class CreateReactionTestsTable extends Migration
             $table->id();
             $table->integer('user_id')->default(0);
             $table->integer('last_score')->default(0);
+            $table->integer('best_score')->default(0);
             $table->integer('score1')->default(0);
             $table->integer('score2')->default(0);
             $table->integer('score3')->default(0);

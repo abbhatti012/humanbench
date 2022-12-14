@@ -405,6 +405,7 @@
                                     <th><div class="th-content"> {{__('Stats')}}</div></th>
                                     <th><div class="th-content"> {{__('Score')}}(<i class="fa fa-info" title="Average of last five score"></i>)</div></th>
                                     <th><div class="th-content"> {{__('Percentile')}}(<i class="fa fa-info" title="Percentile from average last five score"></i>)</div></th>
+                                    <th><div class="th-content"> {{__('Best Score')}}(<i class="fa fa-info" title="Very least score of five trials"></i>)</div></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -419,6 +420,7 @@
                                     </td>
                                     <td><b>{{ $reaction->last_score }}</b> ms</td>
                                     <td><b>{{ $reaction->percentile }}</b></td>
+                                    <td><b>{{ $reaction->best_score }}</b> ms</td>
                                 </tr>
                                 @empty
                                 @endforelse

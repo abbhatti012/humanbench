@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BadDay;
+use App\Models\BestScore;
 use App\Models\History;
 use Carbon\Carbon;
 use App\Models\User;
@@ -46,7 +48,7 @@ class HomeController extends Controller
         if(Auth::check()){
             $reactions = ReactionTest::orderBy('id','desc')->where('user_id',Auth::id())->limit(5)->get();
             $user = User::find(Auth::id());
-            $data['best_time'] = ReactionTest::where('user_id',Auth::id())->min('last_score');
+            $data['best_time'] = ReactionTest::where('user_id',Auth::id())->min('best_score');
         } else {
             $keys=array('HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','HTTP_X_FORWARDED','HTTP_FORWARDED_FOR','HTTP_FORWARDED','REMOTE_ADDR');
             foreach($keys as $k) {
@@ -57,7 +59,7 @@ class HomeController extends Controller
             $host = gethostname();
             $reactions = ReactionTest::orderBy('id','desc')->whereHost($host)->whereIp($ip)->limit(5)->get();
             $user = [];
-            $data['best_time'] = ReactionTest::whereHost($host)->whereIp($ip)->min('last_score');
+            $data['best_time'] = ReactionTest::whereHost($host)->whereIp($ip)->min('best_score');
         }
         
         $personal_average_reaction = 0;
@@ -242,6 +244,8 @@ class HomeController extends Controller
             }
             $host = gethostname();
         }
+        $best_score = min($scores);
+        
         $reaction = new ReactionTest();
         $reaction->last_score = $score;
         $reaction->score1 = $scores[0];
@@ -252,18 +256,54 @@ class HomeController extends Controller
         $reaction->avg_score = round(($scores[0] + $scores[1] + $scores[2] + $scores[3] + $scores[4])/5, 1);
         $reaction->ip = $ip;
         $reaction->host = $host;
+        $reaction->best_score = $best_score;
         $reaction->user_id = $user_id;
 
         $percentile = getPercentile($score);
         $reaction->percentile = $percentile;
         $reaction->save();
-        $this->save_history();
-        return response()->json(true);
+
+        $this->save_best_score($best_score);
+        $this->save_bad_day($reaction->avg_score);
+
+        if($ip != ''){
+            $current_avg = ReactionTest::where('host',$host)->where('ip',$ip)->where('created_at',date('Y-m-d'))->avg('avg_score');
+        } else {
+            $current_avg = ReactionTest::where('user_id',$user_id)->where('created_at',date('Y-m-d'))->avg('avg_score');
+        }
+        $is_bad = $this->get_previous_avg_score($current_avg, $ip, $host);
+        
+        $data['previous_avg'] = $is_bad;
+        $data['current_avg'] = getPercentile($current_avg);
+        
+        if($is_bad != '' && $is_bad != 'not_exists'){
+            return response()->json(['status' => 'bad', 'data' => $data]);
+        } else if($is_bad == 'not_exists') {
+            return response()->json(['status' => '', 'data' => '']);
+        } else {
+            return response()->json(['status' => 'good', 'data' => $data]);
+        }
     }
-    public function save_history(){
+    public function get_previous_avg_score($current_score, $ip, $host){
+        $day_before = date('Y-m-d', strtotime(date('Y-m-d') . ' -1 day' ));
+        if($ip != ''){
+            $previous_score = BadDay::where(array('host' => $host, 'ip' => $ip, 'created_at' => $day_before))->first();
+        } else {
+            $previous_score = BadDay::where(array('user_id' => Auth::id(), 'created_at' => $day_before))->first();
+        }
+        if($previous_score){
+            if((int)$previous_score->score < $current_score){
+                return getPercentile($previous_score->score);
+            } else {
+                return '';
+            }
+        } else {
+            return 'not_exists';
+        }
+    }
+    public function save_best_score($best_score){
         if(Auth::check()){
-            $reaction_score = ReactionTest::where('user_id',Auth::id())->where('created_at',date("Y-m-d"))->avg('avg_score');
-            $history = History::firstOrNew(array('user_id' => Auth::id(), 'created_at' => date("Y-m-d")));
+            $history = BestScore::firstOrNew(array('user_id' => Auth::id()));
             $history->user_id = Auth::id();
         } else {
             $keys=array('HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','HTTP_X_FORWARDED','HTTP_FORWARDED_FOR','HTTP_FORWARDED','REMOTE_ADDR');
@@ -273,14 +313,41 @@ class HomeController extends Controller
                 }
             }
             $host = gethostname();
-            $reaction_score = ReactionTest::where('ip',$ip)->where('host',$host)->where('created_at',date("Y-m-d"))->avg('avg_score');
-            $history = History::firstOrNew(array('ip' => $ip, 'host' => $host, 'created_at' => date("Y-m-d")));
+            $history = BestScore::firstOrNew(array('ip' => $ip, 'host' => $host));
             $history->host = $host;
             $history->ip = $ip;
         }
-        
-        $history->score = $reaction_score;
-        $history->percentile = getPercentile($reaction_score);
+        if($history->best_score == ''){
+            $history->best_score = $best_score;
+        } else {
+            if($history->best_score > $best_score){
+                $history->best_score = $best_score;
+            }
+        }
+        $history->save();
+        return true;
+    }
+    public function save_bad_day($bad_score){
+        if(Auth::check()){
+            $history = BadDay::firstOrNew(array('user_id' => Auth::id(), 'created_at' => date('Y-m-d')));
+            $history->user_id = Auth::id();
+        } else {
+            $keys=array('HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','HTTP_X_FORWARDED','HTTP_FORWARDED_FOR','HTTP_FORWARDED','REMOTE_ADDR');
+            foreach($keys as $k) {
+                if (!empty($_SERVER[$k]) && filter_var($_SERVER[$k], FILTER_VALIDATE_IP)) {
+                    $ip = $_SERVER[$k];
+                }
+            }
+            $host = gethostname();
+            $history = BadDay::firstOrNew(array('ip' => $ip, 'host' => $host, 'created_at' => date('Y-m-d')));
+            $history->host = $host;
+            $history->ip = $ip;
+        }
+        if($history->score == ''){
+            $history->score = $bad_score;
+        } else {
+            $history->score = round(($history->score + $bad_score)/2, 1);
+        }
         $history->save();
         return true;
     }

@@ -289,7 +289,7 @@
                                     <th><div class="th-content"> {{__('Personal Average Reaction')}}(<i class="fa fa-info" title="Average of last five score"></i>)</div></th>
                                     <th><div class="th-content"> {{__('Percentile')}}(<i class="fa fa-info" title="Percentile from average last five score"></i>)</div></th>
                                     <th><div class="th-content"> {{__('Best Time')}}</div></th>
-                                    <th><div class="th-content"> {{__('Bad Day')}}</div></th>
+                                    <!-- <th><div class="th-content"> {{__('Bad Day')}}</div></th> -->
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -304,7 +304,7 @@
                                     <td><b>{{ $data['personal_average_reaction'] }}</b> ms</td>
                                     <td><b>{{ $data['percentile'] }}</b></td>
                                     <td><b>{{ $data['best_time'] }}</b> ms</td>
-                                    <td><b>0</b></td>
+                                    <!-- <td><b>0</b></td> -->
                                 </tr>
                                 <tr>
                                     <td>Visual Memory</td>
@@ -317,7 +317,7 @@
                                     <td><b>0</b> ms</td>
                                     <td><b>0</b> %</td>
                                     <td><b>0</b></td>
-                                    <td><b>0</b></td>
+                                    <!-- <td><b>0</b></td> -->
                                 </tr>
                                 <tr>
                                     <td>Number Memory</td>
@@ -330,7 +330,7 @@
                                     <td><b>0</b> ms</td>
                                     <td><b>0</b> %</td>
                                     <td><b>0</b></td>
-                                    <td><b>0</b></td>
+                                    <!-- <td><b>0</b></td> -->
                                 </tr>
                                 <tr>
                                     <td>Verbal Memory</td>
@@ -343,7 +343,7 @@
                                     <td><b>0</b> ms</td>
                                     <td><b>0</b> %</td>
                                     <td><b>0</b></td>
-                                    <td><b>0</b></td>
+                                    <!-- <td><b>0</b></td> -->
                                 </tr>
                                 <tr>
                                     <td>Typing</td>
@@ -356,7 +356,7 @@
                                     <td><b>0</b> ms</td>
                                     <td><b>0</b> %</td>
                                     <td><b>0</b></td>
-                                    <td><b>0</b></td>
+                                    <!-- <td><b>0</b></td> -->
                                 </tr>
                                 <tr>
                                     <td>Aim Trainer</td>
@@ -369,7 +369,7 @@
                                     <td><b>0</b> ms</td>
                                     <td><b>0</b> %</td>
                                     <td><b>0</b></td>
-                                    <td><b>0</b></td>
+                                    <!-- <td><b>0</b></td> -->
                                 </tr>
                                 <tr>
                                     <td>Chimp Test</td>
@@ -382,7 +382,7 @@
                                     <td><b>0</b> ms</td>
                                     <td><b>0</b> %</td>
                                     <td><b>0</b></td>
-                                    <td><b>0</b></td>
+                                    <!-- <td><b>0</b></td> -->
                                 </tr>
                                 <tr>
                                     <td>Sequence Memory</td>
@@ -395,7 +395,7 @@
                                     <td><b>0</b> ms</td>
                                     <td><b>0</b> %</td>
                                     <td><b>0</b></td>
-                                    <td><b>0</b></td>
+                                    <!-- <td><b>0</b></td> -->
                                 </tr>
                                
                                 </tbody>

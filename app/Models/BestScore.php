@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class History extends Model
+class BestScore extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id','host','ip','avg_score','percentile'];
+    protected $fillable = ['user_id','host','ip','best_score'];
 }
