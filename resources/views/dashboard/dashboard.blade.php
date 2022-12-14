@@ -8,10 +8,6 @@
     {!! Html::style('plugins/flatpickr/custom-flatpickr.css') !!}
     {!! Html::style('assets/css/elements/tooltip.css') !!}
 
-    <meta name="theme-color" content="#6777ef"/>
-    <link rel="apple-touch-icon" href="{{ asset('b.png') }}">
-    <link rel="manifest" href="{{ asset('/manifest.json') }}">
-
     <style>
         .img-thumbnail{
             width: 134px;
@@ -19,6 +15,11 @@
         }
         .apexcharts-legend-text{
             color: white !important;
+        }
+        @media only screen and (max-width: 600px) {
+            .apexcharts-xaxis-texts-g {
+                display: none;
+            }
         }
     </style>
 @endpush
@@ -213,6 +214,7 @@
                                 <img src="{{ asset('assets/img/profile-21.jpg') }}" alt="{{ $user->name }}" class="img-thumbnail rounded-circle mb-3">
                             @endif
                             <h5 class="mb-0 stronger">{{ $user->name }}</h5>
+                            <h5 class="mb-0 stronger">ID#{{ $user->id }}</h5>
                             <a class="text-primary" href="{{ route('profile') }}">@<?php echo str_replace(" ","_",$user->name); ?></a>
                         @else
                             <img src="{{ asset('assets/img/profile-21.jpg') }}" alt="Avatar" class="img-thumbnail rounded-circle mb-3">
@@ -222,22 +224,30 @@
                         <div class="d-flex justify-content-center align-items-center mt-4">
                             <div class="dash-followers mr-4">
                                 <div class="d-flex justify-content-center align-items-center">
+                                @if(!$user)
                                     <button type="button" class="btn bg-light-secondary px-2">
                                         <i class="lar la-user"></i>
                                     </button>
+                                @endif
                                     <div class="ml-2">
+                                        @if(!$user)
                                         <a href="{{ url('/login') }}"><h5 class="mb-0"> Log In</h5></a>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
                             
                             <div class="dash-ratings">
                                 <div class="d-flex justify-content-center align-items-center">
-                                    <button type="button" class="btn bg-light-secondary px-2">
-                                        <i class="las la-user"></i>
-                                    </button>
-                                    <div class="ml-2">
+                                @if(!$user)
+                                <button type="button" class="btn bg-light-secondary px-2">
+                                    <i class="las la-user"></i>
+                                </button>
+                                @endif
+                                <div class="ml-2">
+                                        @if(!$user)
                                         <a href="{{ url('/login') }}"><h5 class="mb-0"> Sign Up</h5></a>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -407,16 +417,6 @@
 @endpush
 
 @push('custom-scripts')
-    <script src="{{ asset('/sw.js') }}"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            if (!navigator.serviceWorker.controller) {
-                navigator.serviceWorker.register("/sw.js").then(function (reg) {
-                    console.log("Service worker has been registered for scope: " + reg.scope);
-                });
-            }
-        }
-    </script>
     <script>
         (function($) {
             $(document).on('click','.redirectTo',function(){

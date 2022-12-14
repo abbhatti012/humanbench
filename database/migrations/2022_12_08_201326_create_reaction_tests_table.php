@@ -22,6 +22,7 @@ class CreateReactionTestsTable extends Migration
             $table->integer('score3')->default(0);
             $table->integer('score4')->default(0);
             $table->integer('score5')->default(0);
+            $table->integer('avg_score')->default(0);
             $table->string('ip')->nullable();
             $table->string('host')->nullable();
             $table->timestamps();

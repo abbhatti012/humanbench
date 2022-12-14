@@ -1,15 +1,15 @@
 {
-    "name": "Laravel Package Tutorial",
+    "name": "CMS benchmark",
     "short_name": "LPT",
     "start_url": "/index.php",
     "background_color": "#6777ef",
-    "description": "Tutorial of Laravel Package",
+    "description": "CMS benchmark",
     "display": "fullscreen",
     "theme_color": "#6777ef",
     "icons": [
         {
-            "src": "b.png",
-            "sizes": "51x60",
+            "src": "logo.png",
+            "sizes": "512x512",
             "type": "image/png",
             "purpose": "any maskable"
         }

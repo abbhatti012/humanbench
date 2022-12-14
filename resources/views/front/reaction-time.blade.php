@@ -148,6 +148,15 @@
                 transform: translateY(-15px);
             }
         }
+        .img-thumbnail{
+            width: 134px;
+            height: 134px;
+        }
+        @media only screen and (max-width: 600px) {
+            .apexcharts-xaxis-texts-g {
+                display: none;
+            }
+        }
     </style>
     <div class="layout-px-spacing">
         <div class="row layout-top-spacing">
@@ -315,28 +324,47 @@
                     <div class="d-flex justify-content-end mb-4">
                     </div>
                     <div class="text-center mb-4">
-                        <img src="{{ asset('assets/img/profile-21.jpg') }}" alt="Avatar" class="img-thumbnail rounded-circle mb-3">
-                        <h5 class="mb-0 stronger"> Guest User</h5>
-                        <a class="text-primary" href="#">@oliver_murphy</a>
+                        @if($user)
+                            @if($user->avatar)
+                                <img src="{{ asset($user->avatar) }}" alt="{{ $user->name }}" class="img-thumbnail rounded-circle mb-3">
+                            @else
+                                <img src="{{ asset('assets/img/profile-21.jpg') }}" alt="{{ $user->name }}" class="img-thumbnail rounded-circle mb-3">
+                            @endif
+                            <h5 class="mb-0 stronger">{{ $user->name }}</h5>
+                            <h5 class="mb-0 stronger">ID#{{ $user->id }}</h5>
+                            <a class="text-primary" href="{{ route('profile') }}">@<?php echo str_replace(" ","_",$user->name); ?></a>
+                        @else
+                            <img src="{{ asset('assets/img/profile-21.jpg') }}" alt="Avatar" class="img-thumbnail rounded-circle mb-3">
+                            <h5 class="mb-0 stronger">Guest</h5>
+                            <a class="text-primary" href="javascript:void(0)">@<span>guest</span></a>
+                        @endif
                         <div class="d-flex justify-content-center align-items-center mt-4">
                             <div class="dash-followers mr-4">
                                 <div class="d-flex justify-content-center align-items-center">
+                                @if(!$user)
                                     <button type="button" class="btn bg-light-secondary px-2">
                                         <i class="lar la-user"></i>
                                     </button>
+                                @endif
                                     <div class="ml-2">
+                                        @if(!$user)
                                         <a href="{{ url('/login') }}"><h5 class="mb-0"> Log In</h5></a>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
                             
                             <div class="dash-ratings">
                                 <div class="d-flex justify-content-center align-items-center">
-                                    <button type="button" class="btn bg-light-secondary px-2">
-                                        <i class="las la-user"></i>
-                                    </button>
-                                    <div class="ml-2">
+                                @if(!$user)
+                                <button type="button" class="btn bg-light-secondary px-2">
+                                    <i class="las la-user"></i>
+                                </button>
+                                @endif
+                                <div class="ml-2">
+                                        @if(!$user)
                                         <a href="{{ url('/login') }}"><h5 class="mb-0"> Sign Up</h5></a>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

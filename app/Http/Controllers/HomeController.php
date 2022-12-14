@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\History;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\ReactionTest;
@@ -243,11 +244,12 @@ class HomeController extends Controller
         }
         $reaction = new ReactionTest();
         $reaction->last_score = $score;
-        $reaction->score1 = $scores[1];
-        $reaction->score2 = $scores[2];
-        $reaction->score3 = $scores[3];
-        $reaction->score4 = $scores[4];
-        $reaction->score5 = $scores[5];
+        $reaction->score1 = $scores[0];
+        $reaction->score2 = $scores[1];
+        $reaction->score3 = $scores[2];
+        $reaction->score4 = $scores[3];
+        $reaction->score5 = $scores[4];
+        $reaction->avg_score = round(($scores[0] + $scores[1] + $scores[2] + $scores[3] + $scores[4])/5, 1);
         $reaction->ip = $ip;
         $reaction->host = $host;
         $reaction->user_id = $user_id;
@@ -255,7 +257,32 @@ class HomeController extends Controller
         $percentile = getPercentile($score);
         $reaction->percentile = $percentile;
         $reaction->save();
+        $this->save_history();
         return response()->json(true);
+    }
+    public function save_history(){
+        if(Auth::check()){
+            $reaction_score = ReactionTest::where('user_id',Auth::id())->where('created_at',date("Y-m-d"))->avg('avg_score');
+            $history = History::firstOrNew(array('user_id' => Auth::id(), 'created_at' => date("Y-m-d")));
+            $history->user_id = Auth::id();
+        } else {
+            $keys=array('HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','HTTP_X_FORWARDED','HTTP_FORWARDED_FOR','HTTP_FORWARDED','REMOTE_ADDR');
+            foreach($keys as $k) {
+                if (!empty($_SERVER[$k]) && filter_var($_SERVER[$k], FILTER_VALIDATE_IP)) {
+                    $ip = $_SERVER[$k];
+                }
+            }
+            $host = gethostname();
+            $reaction_score = ReactionTest::where('ip',$ip)->where('host',$host)->where('created_at',date("Y-m-d"))->avg('avg_score');
+            $history = History::firstOrNew(array('ip' => $ip, 'host' => $host, 'created_at' => date("Y-m-d")));
+            $history->host = $host;
+            $history->ip = $ip;
+        }
+        
+        $history->score = $reaction_score;
+        $history->percentile = getPercentile($reaction_score);
+        $history->save();
+        return true;
     }
     public function reaction_time(){
         $date = Carbon::now();

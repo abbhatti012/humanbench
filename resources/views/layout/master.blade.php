@@ -5,6 +5,9 @@
     <!-- initiate head with meta tags, css and script -->
     @include('include.head')
 
+    <meta name="theme-color" content="#6777ef"/>
+    <link rel="apple-touch-icon" href="{{ asset('logo.png') }}">
+    <link rel="manifest" href="{{ asset('/manifest.json') }}">
 </head>
 <body class="{{ $theme . 'mode' }}" data-base-url="{{url('/')}}">
     <!-- Loader Starts -->
@@ -59,6 +62,15 @@
     @include('include.scripts')
 
     <!-- Common Script Ends -->
-
+    <script src="{{ asset('/sw.js') }}"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            if (!navigator.serviceWorker.controller) {
+                navigator.serviceWorker.register("/sw.js").then(function (reg) {
+                    console.log("Service worker has been registered for scope: " + reg.scope);
+                });
+            }
+        }
+    </script>
 </body>
 </html>
