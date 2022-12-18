@@ -4,12 +4,20 @@
   <meta charset="UTF-8">
   <title>CNS Benchmarks</title>
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/css/uikit.min.css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 </head>
 <body>
     <style>
         .notification{
             background: red;
+            padding: 12px;
+            color: white;
+            border-radius: 12px;
+            display: none;
+        }
+        .status{
+            background: black;
             padding: 12px;
             color: white;
             border-radius: 12px;
@@ -23,7 +31,6 @@
       <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle uk-background-secondary" uk-height-viewport>
             <button class="uk-modal-close-full" type="button" uk-close onclick="history.back()"></button>
             <div class="uk-width-xxlarge uk-padding-large uk-card uk-card-default uk-card-body uk-box-shadow-large">
-                <p class="notification"></p>
                 <section id="level1next" class="mt-5">
                     <div class="d-flex justify-content-center">
                         <div class="text-white text-center">
@@ -49,7 +56,6 @@
                                     </ul>
                                 </section>
                                 <h2 class="fs-2 fw-bold mx-3 text-white"><span id="attemptlevel" class="mx-3">1</span>Attempt</h2>
-                                <p class="mt-4 attempttext text-white">You will see a gray button on a screen. In a few seconds it will become green.<br> Your task is to press on it as fast as you can and we will calculate your reaction.</p>
                                 </div>
                             </div>
                         </div>
@@ -72,7 +78,7 @@
                         </div>
                     </div>
                 </section>
-                <p class="fs-3 text-center fw-bold waitgreen d-none font-forty text-white"><b>Wait For Green</b></p>
+                <p class="fs-3 text-center fw-bold waitgreen d-none font-forty text-white"><b>Wait For Green</b>&nbsp;&nbsp;<i class="fa fa-info-circle"></i></p>
                 <div class="tosoon">
                     <p class="fs-3 text-center fw-bold m-0 text-white"><b>You pressed too soon.</b></p>
                     <p class="text-center text-white"><b>You need to retry this attempt</b></p>
@@ -98,7 +104,45 @@
             </div>
         </div>
     </div>
+    <div class="modal fade show" id="information-popup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" style="padding-right: 17px;" aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="modal-body text-white text-center p-5">
+                        <p class="mt-4 attempttext text-white">You will see a gray button on a screen. In a few seconds it will become green.<br> Your task is to press on it as fast as you can and we will calculate your reaction.</p>
+                        <div class="d-flex justify-content-center">
+                            <button class="btn btn-danger mx-3 px-3 closeModal"><i class="mx-2 fa fa-times" width="15" height="15"></i>Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade show" id="result-popup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" style="padding-right: 17px;" aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="modal-body text-white text-center p-5">
+                        <p class="notification"></p>
+                        <p class="status"></p>
+                        <div class="d-flex justify-content-center">
+                            <button class="btn btn-danger mx-3 px-3 closeModal"><i class="mx-2 fa fa-times" width="15" height="15"></i>Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <style>
+        #information-popup{
+            display: none;
+        }
+        #result-popup{
+            display: none;
+        }
+        .fa-info-circle{
+            cursor: pointer;
+        }
         .justify-content-center{
             justify-content: center!important;
         }
@@ -200,8 +244,8 @@
         }
         .circle{
             background: red !important;
-            width: 200px;
-            height: 200px;
+            width: 250px;
+            height: 250px;
             border-radius: 9999px;
             margin: 10px;
             box-shadow: 0 0 0 10px #2c353f;
@@ -221,8 +265,8 @@
         }
         .retry-circle{
             background: red!important;
-            width: 200px;
-            height: 200px;
+            width: 250px;
+            height: 250px;
             border-radius: 9999px;
             margin: 10px;
             box-shadow: 0 0 0 10px #2c353f;
@@ -394,7 +438,7 @@
                 },1000)
             }
             function getRandom(){
-                let min = 1;
+                let min = 3;
                 let max = 6;
                 
                 return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -478,15 +522,38 @@
                         // $('.popup-btn').attr('disabled',true);
                         $('#staticBackdrop').hide();
                         // window.location.href = "{{ route('reaction-time') }}/#dashboard-table";
-                        if(data.status == 'bad'){
+                        if(data.status == 'ok'){
                             $('.notification').css('display','block');
-                            $('.notification').html('You are getting bad today as compared to your last result. Previously you were '+data.data.previous_avg+ ' score and now you are '+data.data.current_avg+'.<br> <a href="{{ route("reaction-time") }}/#dashboard-table">Click here</a> to see your stat result or play again!');
-                        } else if(data.status == 'good') {
-                            $('.notification').css('display','block');
-                            $('.notification').html('You are improving your score today as compared to your last result. Currently you are '+data.data.current_avg+'.<br> <a href="{{ route("reaction-time") }}/#dashboard-table">Click here</a> to see your stat result or play again!');
+                            // $('.notification').html('Previously you were '+data.data.previous_avg+ ' score and now you are '+data.data.current_avg+'.<br> <a href="{{ route("reaction-time") }}/#dashboard-table">Click here</a> to see your stat result or play again!');
+                            var html = '';
+                            if(data.data.current_percentile > 0){
+                                html += ' Currently you are at '+ data.data.current_percentile+ '% percentile';
+                            }
+                            if(data.data.is_better == 0){
+                                $('.notification').html('Today your score is '+data.data.current_avg+' which is '+data.data.better_score+'% down than previous day!<br>');
+                            } else {
+                                $('.notification').html('Today your score is '+data.data.current_avg+' which is '+data.data.better_score+'% better than previous day. You are just '+data.data.away+'% away from your best score!<br> '+html);
+                            }
                         } else {
                             $('.notification').css('display','block');
                             $('.notification').html('<a href="{{ route("reaction-time") }}/#dashboard-table">Click here</a> to see your stat result or play again!');
+                        }
+                        $('#result-popup').show();
+                        if(data.data.index == 1){
+                            $('.status').css('display','block');
+                            $('.status').html('Your current cognitive state is brain dead');
+                        } else if(data.data.index == 2){
+                            $('.status').css('display','block');
+                            $('.status').html('Your current cognitive state is fatigued');
+                        } else if(data.data.index == 3){
+                            $('.status').css('display','block');
+                            $('.status').html('Your current cognitive state is average');
+                        } else if(data.data.index == 4){
+                            $('.status').css('display','block');
+                            $('.status').html('Your current cognitive state is good');
+                        } else if(data.data.index == 5){
+                            $('.status').css('display','block');
+                            $('.status').html('Your current cognitive state is fully charged');
                         }
 
                         isRetry = true;
@@ -506,6 +573,13 @@
                     }
                 })
             }
+            $('.fa-info-circle').on('click',function(){
+                $('#information-popup').css('display','block');
+            })
+            $('.closeModal').on('click',function(){
+                $('#information-popup').css('display','none');
+                $('#result-popup').css('display','none');
+            })
         })
     </script>
 </body>

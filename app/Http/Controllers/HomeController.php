@@ -234,6 +234,7 @@ class HomeController extends Controller
             $ip = '';
             $host = '';
             $user_id = Auth::id();
+            $score_array = ReactionTest::where('user_id',$user_id)->where('created_at',date('Y-m-d'))->get('last_score')->toArray();
         } else {
             $user_id = 0;
             $keys=array('HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','HTTP_X_FORWARDED','HTTP_FORWARDED_FOR','HTTP_FORWARDED','REMOTE_ADDR');
@@ -243,6 +244,7 @@ class HomeController extends Controller
                 }
             }
             $host = gethostname();
+            $score_array = ReactionTest::where('host',$host)->where('ip',$ip)->where('created_at',date('Y-m-d'))->get('last_score')->toArray();
         }
         $best_score = min($scores);
         
@@ -262,43 +264,94 @@ class HomeController extends Controller
         $percentile = getPercentile($score);
         $reaction->percentile = $percentile;
         $reaction->save();
+        $sorted_array = [];
+        if($score_array && count($score_array) > 4){
+            for($i = 0; $i < 5; $i++){
+                array_push($sorted_array, $score_array[$i]['last_score']);
+            }
+            array_push($sorted_array, $reaction->score5);
+            sort($sorted_array);
+            $data['index'] = array_search($reaction->score5, $sorted_array) + 1;
+        } else {
+            array_push($sorted_array, $reaction->score5);
+            sort($sorted_array);
+            $data['index'] = array_search($reaction->score5, $sorted_array) + 1;
+        }
+        if(count($score_array) >= 5){
+            $data['current_percentile'] = round($data['index']/count($score_array)*100,1);
+        } else {
+            $data['current_percentile'] = 0;
+        }
+        $best_score_so_far = $this->save_best_score($best_score);
+        // $best_percentile_so_far = getPercentage(getPercentile($best_score_so_far));
 
-        $this->save_best_score($best_score);
         $this->save_bad_day($reaction->avg_score);
 
         if($ip != ''){
-            $current_avg = ReactionTest::where('host',$host)->where('ip',$ip)->where('created_at',date('Y-m-d'))->avg('avg_score');
+            $current_avg = BadDay::where('host',$host)->where('ip',$ip)->where('created_at',date('Y-m-d'))->first();
         } else {
-            $current_avg = ReactionTest::where('user_id',$user_id)->where('created_at',date('Y-m-d'))->avg('avg_score');
+            $current_avg = BadDay::where('user_id',$user_id)->where('created_at',date('Y-m-d'))->first();
         }
-        $is_bad = $this->get_previous_avg_score($current_avg, $ip, $host);
+        $previous_score = $this->get_previous_avg_score($current_avg->score, $ip, $host);
         
-        $data['previous_avg'] = $is_bad;
-        $data['current_avg'] = getPercentile($current_avg);
+        $data['previous_avg'] = getPercentile($previous_score);
+        $data['current_avg'] = getPercentile($current_avg->score);
+
+        // $previous_percentage = getPercentage($data['previous_avg']);
+        // $current_percentage = getPercentage($data['current_avg']);
         
-        if($is_bad != '' && $is_bad != 'not_exists'){
-            return response()->json(['status' => 'bad', 'data' => $data]);
-        } else if($is_bad == 'not_exists') {
-            return response()->json(['status' => '', 'data' => '']);
+        // if (str_contains($data['previous_avg'], 'Btm') && str_contains($data['current_avg'], 'Btm')) {
+        //     if($previous_percentage > $current_percentage){
+        //         $data['better_score'] = $previous_percentage - $current_percentage;
+        //         $data['is_better'] = 0;
+        //     } else {
+        //         $data['better_score'] = $current_percentage - $previous_percentage;
+        //         $data['is_better'] = 1;
+        //     }
+        // } elseif(str_contains($data['previous_avg'], 'Top' && str_contains($data['current_avg'], 'Top'))) {
+        //     if($previous_percentage > $current_percentage){
+        //         $data['better_score'] = $previous_percentage - $current_percentage;
+        //         $data['is_better'] = 0;
+        //     } else {
+        //         $data['better_score'] = $current_percentage - $previous_percentage;
+        //         $data['is_better'] = 1;
+        //     }
+        // }
+        if($previous_score != ''){
+            if($previous_score > $current_avg->score){
+                $score = $previous_score - $current_avg->score;
+                $data['better_score'] = round(($score/$previous_score)*100,1);
+                $data['is_better'] = 1;
+                $away = $current_avg->score - $best_score_so_far;
+                $data['away'] = round(($away/$current_avg->score)*100,1);
+            } else {
+                $score = $current_avg->score - $previous_score;
+                $data['better_score'] = round(($score/$current_avg->score)*100,1);
+                $data['is_better'] = 0;
+           }
+        }
+        if($previous_score != ''){
+            return response()->json(['status' => 'ok', 'data' => $data]);
         } else {
-            return response()->json(['status' => 'good', 'data' => $data]);
+            return response()->json(['status' => '', 'data' => $data]);
         }
     }
     public function get_previous_avg_score($current_score, $ip, $host){
-        $day_before = date('Y-m-d', strtotime(date('Y-m-d') . ' -1 day' ));
+        $date = date('Y-m-d');
         if($ip != ''){
-            $previous_score = BadDay::where(array('host' => $host, 'ip' => $ip, 'created_at' => $day_before))->first();
+            $previous_score = BadDay::where(array('host' => $host, 'ip' => $ip))->where('created_at','!=',$date)->orderBy('id','desc')->first();
         } else {
-            $previous_score = BadDay::where(array('user_id' => Auth::id(), 'created_at' => $day_before))->first();
+            $previous_score = BadDay::where(array('user_id' => Auth::id()))->where('created_at','!=',$date)->orderBy('id','desc')->first();
         }
         if($previous_score){
-            if((int)$previous_score->score < $current_score){
-                return getPercentile($previous_score->score);
-            } else {
-                return '';
-            }
+            return $previous_score->score;
+            // if((int)$previous_score->score < $current_score){
+            //     return getPercentile($previous_score->score);
+            // } else {
+            //     return '';
+            // }
         } else {
-            return 'not_exists';
+            return '';
         }
     }
     public function save_best_score($best_score){
@@ -325,7 +378,7 @@ class HomeController extends Controller
             }
         }
         $history->save();
-        return true;
+        return $history->best_score;
     }
     public function save_bad_day($bad_score){
         if(Auth::check()){

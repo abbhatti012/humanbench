@@ -34,7 +34,7 @@ function getPercentile($score){
     } elseif($score > 250 && $score <= 270){
         $percentile = 'Top 40%';
     } elseif($score > 270 && $score <= 300){
-        $percentile = '50%';
+        $percentile = 'Top 50%';
     } elseif($score > 300 && $score <= 330){
         $percentile = 'Btm 50%';
     } elseif($score > 330 && $score <= 350){
