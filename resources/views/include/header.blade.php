@@ -1,15 +1,15 @@
 <header class="header navbar navbar-expand-sm">
     <ul class="navbar-item theme-brand flex-row  text-center">
-        <li class="nav-item theme-logo">
+        <!-- <li class="nav-item theme-logo">
             <a href="{{ url('/') }}">
                 <img src="{{ url('assets/img/logo.png') }}" class="navbar-logo" alt="logo">
             </a>
-        </li>
+        </li> -->
         <li class="nav-item theme-text">
             <a href="{{ url('/') }}" class="text-white" style="font-family: Futura Medium;"><img width="240" src="{{ url('assets/img/quest.png') }}" class="navbar-logo" alt="logo"></a>
         </li>
     </ul>
-    <ul class="navbar-item flex-row ml-md-0 ml-auto">
+    <!-- <ul class="navbar-item flex-row ml-md-0 ml-auto">
         <li class="nav-item align-self-center search-animated">
             <i class="las la-search toggle-search"></i>
             <form class="form-inline search-full form-inline search" action="{{ url('/pages/search-result') }}" role="search">
@@ -18,7 +18,7 @@
                 </div>
             </form>
         </li>
-    </ul>
+    </ul> -->
     <ul class="navbar-item flex-row ml-md-auto">
         <!-- <li class="nav-item dropdown  fullscreen-dropdown">
             <a class="nav-link night-light-mode"  href="javascript:void(0);">
@@ -30,7 +30,7 @@
                 <i class="las la-compress" id="fullScreenIcon"></i>
             </a>
         </li>
-        <li class="nav-item dropdown language-dropdown">
+        <!-- <li class="nav-item dropdown language-dropdown">
             <a href="javascript:void(0);" class="nav-link dropdown-toggle" id="language-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="las la-language"></i>
             </a>
@@ -52,7 +52,7 @@
                     <span class="align-self-center">&nbsp;{{ __('Arabic') }}</span>
                 </a>
             </div>
-        </li>
+        </li> -->
       
         <!-- <li class="nav-item dropdown notification-dropdown">
             <a href="javascript:void(0);" class="nav-link dropdown-toggle position-relative" id="notificationDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

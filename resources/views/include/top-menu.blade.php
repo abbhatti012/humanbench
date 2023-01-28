@@ -14,18 +14,24 @@
             </a>
         </li>
         <li class="menu  main-single-menu">
-            <a href="javascript:void(0)" class="dropdown-toggle">
+            <a href="{{ route('visual-memory') }}" class="dropdown-toggle">
                 <i class="las la-memory"></i>
                 <span>{{__('Visual Memory')}}</span>
             </a>
         </li>
         <li class="menu  main-single-menu">
-            <a href="javascript:void(0)" class="dropdown-toggle">
+            <a href="{{ route('number-memory') }}" class="dropdown-toggle">
                 <i class="fa fa-sort-numeric-asc"></i>
                 <span>{{__('Number Memory')}}</span>
             </a>
         </li>
         <li class="menu  main-single-menu">
+            <a href="{{ route('legal-disclaimer') }}" class="dropdown-toggle">
+                <i class="fa fa-legal"></i>
+                <span>{{__('Legal Disclaimer')}}</span>
+            </a>
+        </li>
+        <!-- <li class="menu  main-single-menu">
             <a href="javascript:void(0)" class="dropdown-toggle">
                 <i class="las la-memory"></i>
                 <span>{{__('Verbal Memory')}}</span>
@@ -56,6 +62,6 @@
                     <span>Sequence Memory</span>
                 </div>
             </a>
-        </li>
+        </li> -->
     </ul>
 </nav>

@@ -62,20 +62,20 @@
                                     <a href="{{ route('password.request') }}" class="text-primary">{{__('Forgot your Password ?')}}</a>
                                 </div>
                                 @endif
-                                <div class="login-one-inputs social-logins mt-4">
+                                <!-- <div class="login-one-inputs social-logins mt-4">
                                     <div class="social-btn"><a href="#" class="fb-btn"><i class="lab la-facebook-f"></i></a></div>
                                     <div class="social-btn"><a href="#" class="twitter-btn"><i class="lab la-twitter"></i>
                                         </a></div>
                                     <div class="social-btn"><a href="#" class="google-btn"><i class="lab la-google-plus"></i>
                                         </a></div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     <div class="col-xl-8 col-lg-6 col-md-6 d-none d-md-block p-0">
                         <div class="slider-half">
                             <div class="slide-content">
                                 <div class="top-sign-up ">
-                                    <div class="about-comp text-white mt-2">{{__('QUEST VITALITY')}}</div>
+                                    <a href="{{ url('/') }}" class="about-comp text-white mt-2">{{__('QUEST VITALITY')}}</a>
                                     <div class="for-sign-up">
                                         <p class="text-white font-12 mt-2 font-weight-300">{{__('Don\'t have an account ?')}}</p>
                                         <a href="{{url('/register')}}">{{__('Sign Up')}}</a>

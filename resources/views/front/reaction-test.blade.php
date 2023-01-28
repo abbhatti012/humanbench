@@ -23,13 +23,45 @@
             border-radius: 12px;
             display: none;
         }
+        .state{
+            background: black;
+            padding: 12px;
+            color: white;
+            border-radius: 12px;
+            display: none;
+        }
+        @media screen and (max-width: 992px) {
+            .page-tabs .nav-item .nav-link {
+                display: none;
+            }
+            #greenDiv{
+                width: 500px;
+                height: 500px;
+            }
+            #redDiv{
+                width: 500px;
+                height: 500px;
+            }
+            #greyDiv{
+                width: 500px;
+                height: 500px;
+            }
+            #continueDiv{
+                width: 500px;
+                height: 500px;
+            }
+        }
+        .table-center{
+            margin-left: auto;
+            margin-right: auto;
+        }
     </style>
 <div class="uk-position-center">
-  <button style="display: none;" class="uk-button uk-button-default uk-border-pill modallumini" href="#modallumini" uk-toggle>Full Screen Modal</button>  
+    <button style="display: none;" class="uk-button uk-button-default uk-border-pill modallumini" href="#modallumini" uk-toggle>Full Screen Modal</button>  
 </div>
-    <div id="modallumini" class="uk-modal-full " uk-modal>
-      <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle uk-background-secondary" uk-height-viewport>
-            <button class="uk-modal-close-full" type="button" uk-close onclick="history.back()"></button>
+<div id="modallumini" class="uk-modal-full " uk-modal>
+    <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle uk-background-secondary" uk-height-viewport>
+            <a href="javascript:void(0)" class="uk-modal-close-full" type="button" onclick="redirect()" uk-close></a>
             <div class="uk-width-xxlarge uk-padding-large uk-card uk-card-default uk-card-body uk-box-shadow-large">
                 <section id="level1next" class="mt-5">
                     <div class="d-flex justify-content-center">
@@ -74,11 +106,16 @@
                                         <path id="Path_1193" data-name="Path 1193" d="M13959.226,6374.07c3.193-1.49,9.578-6.172,12.346-6.811,2.127,1.7,4.682,7.875,13.836,11.069a23.215,23.215,0,0,0,14.687.425,26.33,26.33,0,0,0,18.945-24.691c0-21.5-23.627-32.78-39.8-22.987-1.491,1.064-5.748,3.83-6.174,5.96,1.7,3.194,8.3,5.533,9.579,8.94-1.275,1.49-3.405,1.275-6.812,1.49l-13.836,1.491c-9.366,1.276-6.812,2.979-9.578-13.2-3.194-19.582-3.406-18.093,3.406-12.558,4.682,3.831,5.108,5.109,7.235,2.767,11.069-11.493,25.97-15.963,41.081-11.493a41.806,41.806,0,0,1,25.329,20.859,40.806,40.806,0,0,1-16.39,53.638c-14.048,8.088-29.16,7.025-42.357-1.915-3.192-2.342-10.642-10.218-11.493-12.984Z" transform="translate(-13950.267 -6312.768)" fill="#e28088" fill-rule="evenodd"></path>
                                     </svg>
                                 </span>
+                                <div id="continueDiv" class="circle justify-content-center d-flex align-items-center color-blue">
+                                    <span class="fs-4 text-white waitt fw-bold">Click to keep going</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </section>
-                <p class="fs-3 text-center fw-bold waitgreen d-none font-forty text-white"><b>Wait For Green</b>&nbsp;&nbsp;<i class="fa fa-info-circle"></i></p>
+                <p class="fs-3 text-center fw-bold waitgreen d-none font-forty text-white"><b>Wait For Green</b>&nbsp;&nbsp;<i class="fa fa-info-circle"></i>
+                <!-- <i class="fa fa-save" title="Save Info"></i> -->
+                </p>
                 <div class="tosoon">
                     <p class="fs-3 text-center fw-bold m-0 text-white"><b>You pressed too soon.</b></p>
                     <p class="text-center text-white"><b>You need to retry this attempt</b></p>
@@ -91,12 +128,17 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="modal-body text-white text-center p-5">
-                        <p>Your Reaction On this attempt is</p>
+                        <h3 class="text-white">Attempt Average:</h3>
                         <p class="fs-1" id="attemptscore">0</p>
-                        <p>You can retry this attempt and improve your results or navigate to the next attempt</p>
+                        <h3 class="text-white">Individual Results:</h3>
+                        <table class="table-center">
+                            
+                        </table><br>
+                        <!-- <p>You can retry this attempt and improve your results or navigate to the next attempt</p> -->
                         <div class="d-flex justify-content-center">
                             <button class="btn btn-danger mx-3 px-3 retry popup-btn" id="retryattempt"><img class="mx-2" src="{{ asset('assets/img/refresh.svg') }}" alt="retry" width="15" height="15">Retry</button>
                             <button class="btn btn-success mx-3 px-3 next popup-btn" id="nextattempt">Next<img class="mx-2" src="{{ asset('assets/img/next.svg') }}" alt="next" width="15" height="15"></button>
+                            <a href="{{ route('reaction-time') }}" class="btn btn-danger mx-3 px-3">Back<img class="mx-2" src="{{ asset('assets/img/refresh.svg') }}" alt="next" width="15" height="15"></a>
                             <button class="btn btn-success mx-3 px-3 save popup-btn" id="saveatempt">Save<img class="mx-2" src="{{ asset('assets/img/next.svg') }}" alt="next" width="15" height="15"></button>
                         </div>
                     </div>
@@ -118,15 +160,32 @@
             </div>
         </div>
     </div>
+    <div class="modal fade show" id="retry-popup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" style="padding-right: 17px;" aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="modal-body text-white text-center p-5">
+                        <div class="row form-group">
+                            <div class="col-lg-6">
+                                <label for="isRetry">Are you wanted to enable retry functionality?  <input name="is_retry" required id="isRetry" type="checkbox" value="0" <?php if(isset($status) && $status->is_retry == 1){echo 'checked';} ?>></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade show" id="result-popup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" style="padding-right: 17px;" aria-modal="true" role="dialog">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="modal-body text-white text-center p-5">
                         <p class="notification"></p>
+                        <p class="state"></p>
                         <p class="status"></p>
                         <div class="d-flex justify-content-center">
-                            <button class="btn btn-danger mx-3 px-3 closeModal"><i class="mx-2 fa fa-times" width="15" height="15"></i>Close</button>
+                            <button class="btn btn-danger mx-3 px-3 retryFromStart"><img class="mx-2" src="{{ asset('assets/img/refresh.svg') }}" alt="retry" width="15" height="15">Play Again</button>
+                            <button class="btn btn-danger mx-3 px-3 closeSaveModal"><i class="mx-2 fa fa-times" width="15" height="15"></i>Close</button>
                         </div>
                     </div>
                 </div>
@@ -140,7 +199,13 @@
         #result-popup{
             display: none;
         }
+        #retry-popup{
+            display: none;
+        }
         .fa-info-circle{
+            cursor: pointer;
+        }
+        .fa-save{
             cursor: pointer;
         }
         .justify-content-center{
@@ -395,6 +460,12 @@
         #redDiv{
             display: none;
         }
+        .color-blue{
+            background-color: blue !important ;
+        }
+        #continueDiv{
+            display: none;
+        }
         .uk-width-xxlarge{
             border-radius: 20px;
             background: grey;
@@ -408,7 +479,19 @@
     </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/js/uikit.min.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js" integrity="sha512-efUTj3HdSPwWJ9gjfGR71X9cvsrthIA78/Fvd/IN+fttQVy7XWkOAXb295j8B3cmm/kFKVxjiNYzKw9IQJHIuQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <script>
+        <?php if($status): ?>
+            var is_retry = "<?= $status->is_retry; ?>";
+            var state = "<?= $status->state; ?>";
+            var status = "<?= $status->status; ?>";
+        <?php else: ?>
+            var is_retry = 0;
+            var state = '';
+            var status = '';
+        <?php endif; ?>
+
         $(document).ready(function(){
             $(".modallumini").trigger("click");
             var isRetry = false;
@@ -435,7 +518,7 @@
                         setMs();
                     }
                 // },random)
-                },1000)
+                },3000)
             }
             function getRandom(){
                 let min = 3;
@@ -463,15 +546,53 @@
             })
             $('#greenDiv').on('click',function(){
                 isGreenClicked = true;
+                scores.push(milliseconds);
+                
                 if(trial == 5){
+                    var html = '';
                     $('.next').css('display','none');
                     $('.save').css('display','block');
+                    html = '<tr>'+
+                                '<td>Trial 1 = </td>'+
+                                '<td>'+scores[0]+' ms</td>'+
+                            '</tr>'+
+                            '<tr>'+
+                                '<td>Trial 2 = </td>'+
+                                '<td>'+scores[1]+' ms</td>'+
+                            '</tr>'+
+                            '<tr>'+
+                                '<td>Trial 3 = </td>'+
+                                '<td>'+scores[2]+' ms</td>'+
+                            '</tr>'+
+                            '<tr>'+
+                                '<td>Trial 4 = </td>'+
+                                '<td>'+scores[3]+' ms</td>'+
+                            '</tr>'+
+                            '<tr>'+
+                                '<td>Trial 5 = </td>'+
+                                '<td>'+scores[4]+' ms</td>'+
+                            '</tr>';
+                    $('.table-center').html(html);
+                    var attemptscore = Math.round((+scores[0] + +scores[1] + +scores[2] + +scores[3] + +scores[4]) / 5);
+                    $('#attemptscore').html(attemptscore+' ms');
                 } else {
                     $('.next').css('display','block');
                     $('.save').css('display','none');
                 }
-                $('#staticBackdrop').show();
-                $('#attemptscore').text(milliseconds+ ' ms');
+                if(is_retry == 1){
+                    $('#staticBackdrop').show();
+                } else if(trial == 5) {
+                    $('#retryattempt').hide();
+                    $('#staticBackdrop').show();
+                } else {
+                    $('#greenDiv').css('display','none');
+                    $('#continueDiv').css('display','flex');
+                }
+                // $('#attemptscore').text(milliseconds+ ' ms');
+            })
+            $('#continueDiv').on('click',function(){
+                $('#continueDiv').css('display','none');
+                $('.next').trigger("click");
             })
             $('#redDiv').on('click',function(){
                 $('.notification').css('display','none');
@@ -491,7 +612,7 @@
                 start();
             }
             $('.next').on('click',function(){
-                scores.push(milliseconds);
+                // scores.push(milliseconds);
                 $('#staticBackdrop').hide();
                 trial += 1;
                 $('#attemptlevel').text(trial);
@@ -503,9 +624,13 @@
                 $('#staticBackdrop').hide();
                 restart();
             });
+            $('.retryFromStart').on('click',function(){
+                $('#result-popup').hide();
+                restart();
+            });
             $('.save').on('click',function(){
                 let score = milliseconds;
-                scores.push(milliseconds);
+                // scores.push(milliseconds);
                 saveScore(score);
             });
             function saveScore(score){
@@ -535,25 +660,17 @@
                                 $('.notification').html('Today your score is '+data.data.current_avg+' which is '+data.data.better_score+'% better than previous day. You are just '+data.data.away+'% away from your best score!<br> '+html);
                             }
                         } else {
-                            $('.notification').css('display','block');
-                            $('.notification').html('<a href="{{ route("reaction-time") }}/#dashboard-table">Click here</a> to see your stat result or play again!');
+                            // $('.notification').css('display','block');
+                            // $('.notification').html('<a href="{{ route("reaction-time") }}/#dashboard-table">Click here</a> to see your stat result or play again!');
                         }
                         $('#result-popup').show();
-                        if(data.data.index == 1){
+                        if(state != ''){
+                            $('.state').css('display','block');
+                            $('.state').html('Your current cognitive state is '+state);
+                        }
+                        if(status != ''){
                             $('.status').css('display','block');
-                            $('.status').html('Your current cognitive state is brain dead');
-                        } else if(data.data.index == 2){
-                            $('.status').css('display','block');
-                            $('.status').html('Your current cognitive state is fatigued');
-                        } else if(data.data.index == 3){
-                            $('.status').css('display','block');
-                            $('.status').html('Your current cognitive state is average');
-                        } else if(data.data.index == 4){
-                            $('.status').css('display','block');
-                            $('.status').html('Your current cognitive state is good');
-                        } else if(data.data.index == 5){
-                            $('.status').css('display','block');
-                            $('.status').html('Your current cognitive state is fully charged');
+                            $('.status').html('Your current body health status is '+status);
                         }
 
                         isRetry = true;
@@ -576,11 +693,42 @@
             $('.fa-info-circle').on('click',function(){
                 $('#information-popup').css('display','block');
             })
+            $('.fa-save').on('click',function(){
+                $('#retry-popup').css('display','block');
+            })
             $('.closeModal').on('click',function(){
                 $('#information-popup').css('display','none');
                 $('#result-popup').css('display','none');
+                $('#retry-popup').css('display','none');
+            })
+            $('.closeSaveModal').on('click',function(){
+                $('#result-popup').css('display','none');
+                // history.back();
+                window.location.href = "{{ route('reaction-time') }}";
+            })
+            $('#isRetry').on('change',function(){
+                var value = $("#isRetry").is(":checked") ? 1 : 0;
+                is_retry = value;
+                if(is_retry == 1){
+                    $('#retryattempt').show();
+                }
+                $.ajax({
+                    type : 'POST',
+                    url : '{{ route("update-statue") }}',
+                    data : {
+                        value : value,
+                        '_token' : "{{ csrf_token() }}"
+                    },
+                    success : function(data){
+                        $('#retry-popup').css('display','none');
+                        $.notify('Data updated successfully!','success');
+                    }
+                })
             })
         })
+        function redirect(){
+            window.location.href = "{{ route('reaction-time') }}";
+        }
     </script>
 </body>
 </html>

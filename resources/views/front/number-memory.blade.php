@@ -29,7 +29,7 @@
                         <nav class="breadcrumb-one" aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href=""> {{__('Dashboard')}}</a></li>
-                                <li class="breadcrumb-item active" aria-current="page"><span> {{__('Reaction Time')}}</span></li>
+                                <li class="breadcrumb-item active" aria-current="page"><span> {{__('Number Memory')}}</span></li>
                             </ol>
                         </nav>
                     </div>
@@ -48,7 +48,7 @@
         </div> -->
         <div class="section-title text-center text-white">
             <h1 class="fw-bold">CNS Benchmarks</h1>
-            <p class="text-center mt-4">Measure your Central Nervous System core capabilities with the Quest Vitality CNS Screen.</p>
+            <p class="text-center mt-4">The average person can remember 7 numbers at once. Can you do more?</p>
         </div><br>
         <div class="arrow-container">
             <div class="arrow-down"></div>
@@ -267,18 +267,26 @@
                                 <thead>
                                 <tr>
                                     <th><div class="th-content"> {{__('Test')}}</div></th>
-                                    <th><div class="th-content"> {{__('Score')}}(<i class="fa fa-info" title="Average of last five score"></i>)</div></th>
+                                    <th><div class="th-content"> {{__('Digits')}}(<i class="fa fa-info" title="Average of last five score"></i>)</div></th>
+                                    <th><div class="th-content"> {{__('Level')}}(<i class="fa fa-info" title="Very least score of five trials"></i>)</div></th>
                                     <th><div class="th-content"> {{__('Percentile')}}(<i class="fa fa-info" title="Percentile from average last five score"></i>)</div></th>
-                                    <th><div class="th-content"> {{__('Best Score')}}(<i class="fa fa-info" title="Very least score of five trials"></i>)</div></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @forelse($reactions as $reaction)
+                                @forelse($numbers as $number)
                                 <tr>
-                                    <td>Reaction Time</td>
-                                    <td><b>{{ $reaction->last_score }}</b> ms</td>
-                                    <td><b>{{ $reaction->percentile }}</b></td>
-                                    <td><b>{{ $reaction->best_score }}</b> ms</td>
+                                    <td>Number Memory</td>
+                                    <td><b>{{ $number->level }}</b></td>
+                                    <td><b>{{ $number->level }}</b></td>
+                                    <td><b>
+                                        @if($number->level <= 7)
+                                            Below Average
+                                        @elseif($number->level >= 8 && $number <= 9)
+                                            Average
+                                        @elseif($number->level > 9)
+                                            Above Average
+                                        @endif
+                                    </b></td>
                                 </tr>
                                 @empty
                                 @endforelse
@@ -384,7 +392,7 @@
                 } else if(is_state == '') {
                     $('#status-health').show();
                 } else {
-                    window.location.href = "{{ route('reaction-test') }}";
+                    window.location.href = "{{ route('number-test') }}";
                 }
             })
             $('.closeModal').on('click',function(){
@@ -505,14 +513,14 @@
                         lineCap: 'square'
                     },
                     series: [{
-                        name: 'Average Score Per Day',
+                        name: '<?= $graph_data['graph_title1'] ?>',
                         data: [
                             <?php foreach($graph_data['statAverageTime'] as $par): ?>
                                 "<?php echo $par; ?>",
                             <?php endforeach; ?>
                         ]
                     }, {
-                        name: 'Percentile Per Day',
+                        name: '<?= $graph_data['graph_title2'] ?>',
                         data: [
                             <?php foreach($graph_data['statPercentile'] as $percent): ?>
                                 <?= $percent ?>,

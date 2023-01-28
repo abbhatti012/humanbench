@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BadDay;
 use App\Models\BestScore;
 use App\Models\History;
+use App\Models\NumberTest;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\ReactionTest;
@@ -44,11 +45,27 @@ class HomeController extends Controller
             $start_date = $date->startOfMonth()->format('Y-m-d');
             $end_date = $date->endOfMonth()->format('Y-m-d');
         }
-        $graph_data = $this->getStat($start_date, $end_date);
+        $passing['start_date'] = $start_date;
+        $passing['end_date'] = $end_date;
+        if(isset($request->filter)){
+            $passing['filter'] = $request->filter;
+            if($request->filter == 'reaction'){
+                $graph_data = $this->getStat($start_date, $end_date);
+            } elseif($request->filter == 'visual'){
+                $graph_data = $this->getStat($start_date, $end_date);
+            } elseif($request->filter == 'number'){
+                $graph_data = $this->getNumberStat($start_date, $end_date);
+            }
+        } else {
+            $passing['filter'] = 'reaction';
+            $graph_data = $this->getStat($start_date, $end_date);
+        }
+
         if(Auth::check()){
             $reactions = ReactionTest::orderBy('id','desc')->where('user_id',Auth::id())->limit(5)->get();
             $user = User::find(Auth::id());
             $data['best_time'] = ReactionTest::where('user_id',Auth::id())->min('best_score');
+            $data['best_number_level'] = NumberTest::where('user_id',Auth::id())->max('level');
         } else {
             $keys=array('HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','HTTP_X_FORWARDED','HTTP_FORWARDED_FOR','HTTP_FORWARDED','REMOTE_ADDR');
             foreach($keys as $k) {
@@ -60,8 +77,8 @@ class HomeController extends Controller
             $reactions = ReactionTest::orderBy('id','desc')->whereHost($host)->whereIp($ip)->limit(5)->get();
             $user = [];
             $data['best_time'] = ReactionTest::whereHost($host)->whereIp($ip)->min('best_score');
+            $data['best_number_level'] = NumberTest::whereHost($host)->whereIp($ip)->max('level');
         }
-        
         $personal_average_reaction = 0;
         if(count($reactions) != 0){
             for($i = 0; $i < count($reactions); $i++){
@@ -73,8 +90,8 @@ class HomeController extends Controller
             $data['personal_average_reaction'] = 0;
             $data['percentile'] = 0;
         }
-            
-        return view('dashboard.dashboard',compact('user','reactions','data','graph_data'));
+    
+        return view('dashboard.dashboard',compact('user','reactions','data','graph_data','passing'));
     }
     public function getStat($start_date, $end_date){
         $date = [0=>$start_date,1=>$end_date];
@@ -124,6 +141,8 @@ class HomeController extends Controller
         $graph_data['statAverageTime'] = $statAverageTime;
         $graph_data['statPercentile'] = $statPercentile;
         $graph_data['statLabel'] = $graph['label'];
+        $graph_data['graph_title1'] = 'Average Score';
+        $graph_data['graph_title2'] = 'Percentile';
         return $graph_data;
     }
     public function get_date_series($start_date, $end_date){
@@ -227,6 +246,29 @@ class HomeController extends Controller
 
         return back()->with('message', ['text'=>'Password changed successfully!','type'=>'success']);
     }
+    public function number_test_score(Request $request){
+        if(Auth::check()){
+            $ip = '';
+            $host = '';
+            $user_id = Auth::id();
+        } else {
+            $user_id = 0;
+            $keys=array('HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','HTTP_X_FORWARDED','HTTP_FORWARDED_FOR','HTTP_FORWARDED','REMOTE_ADDR');
+            foreach($keys as $k) {
+                if (!empty($_SERVER[$k]) && filter_var($_SERVER[$k], FILTER_VALIDATE_IP)) {
+                    $ip = $_SERVER[$k];
+                }
+            }
+            $host = gethostname();
+        }
+        $number = new NumberTest();
+        $number->level = $request->level;
+        $number->ip = $ip;
+        $number->host = $host;
+        $number->user_id = $user_id;
+        $number->save();
+        return response()->json(true);
+    }
     public function save_reaction_score(Request $request){
         $score = $request->score;
         $scores = $request->scores;
@@ -283,7 +325,6 @@ class HomeController extends Controller
             $data['current_percentile'] = 0;
         }
         $best_score_so_far = $this->save_best_score($best_score);
-        // $best_percentile_so_far = getPercentage(getPercentile($best_score_so_far));
 
         $this->save_bad_day($reaction->avg_score);
 
@@ -297,26 +338,6 @@ class HomeController extends Controller
         $data['previous_avg'] = getPercentile($previous_score);
         $data['current_avg'] = getPercentile($current_avg->score);
 
-        // $previous_percentage = getPercentage($data['previous_avg']);
-        // $current_percentage = getPercentage($data['current_avg']);
-        
-        // if (str_contains($data['previous_avg'], 'Btm') && str_contains($data['current_avg'], 'Btm')) {
-        //     if($previous_percentage > $current_percentage){
-        //         $data['better_score'] = $previous_percentage - $current_percentage;
-        //         $data['is_better'] = 0;
-        //     } else {
-        //         $data['better_score'] = $current_percentage - $previous_percentage;
-        //         $data['is_better'] = 1;
-        //     }
-        // } elseif(str_contains($data['previous_avg'], 'Top' && str_contains($data['current_avg'], 'Top'))) {
-        //     if($previous_percentage > $current_percentage){
-        //         $data['better_score'] = $previous_percentage - $current_percentage;
-        //         $data['is_better'] = 0;
-        //     } else {
-        //         $data['better_score'] = $current_percentage - $previous_percentage;
-        //         $data['is_better'] = 1;
-        //     }
-        // }
         if($previous_score != ''){
             if($previous_score > $current_avg->score){
                 $score = $previous_score - $current_avg->score;
@@ -405,6 +426,7 @@ class HomeController extends Controller
         return true;
     }
     public function reaction_time(){
+        $todayDate = date('Y-m-d');
         $date = Carbon::now();
         $start_date = $date->startOfMonth()->format('Y-m-d');
         $end_date = $date->endOfMonth()->format('Y-m-d');
@@ -413,6 +435,7 @@ class HomeController extends Controller
         if(Auth::check()){
             $reactions = ReactionTest::orderBy('id','desc')->where('user_id',Auth::id())->get();
             $user = User::find(Auth::id());
+            $status = DB::table('status')->where('user_id',Auth::id())->where('created_at',$todayDate)->first();
         } else {
             $keys=array('HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','HTTP_X_FORWARDED','HTTP_FORWARDED_FOR','HTTP_FORWARDED','REMOTE_ADDR');
             foreach($keys as $k) {
@@ -422,8 +445,202 @@ class HomeController extends Controller
             }
             $host = gethostname();
             $reactions = ReactionTest::orderBy('id','desc')->whereHost($host)->whereIp($ip)->get();
+            $status = DB::table('status')->whereHost($host)->whereIp($ip)->where('created_at',$todayDate)->first();
             $user = [];
         }
-        return view('front.reaction-time',compact('reactions','graph_data','user'));
+        return view('front.reaction-time',compact('reactions','graph_data','user', 'status'));
+    }
+    public function reaction_test(){
+        $todayDate = date('Y-m-d');
+        if(Auth::check()){
+            $status = DB::table('status')->where('user_id',Auth::id())->where('created_at',$todayDate)->first();
+        } else {
+            $keys=array('HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','HTTP_X_FORWARDED','HTTP_FORWARDED_FOR','HTTP_FORWARDED','REMOTE_ADDR');
+            foreach($keys as $k) {
+                if (!empty($_SERVER[$k]) && filter_var($_SERVER[$k], FILTER_VALIDATE_IP)) {
+                    $ip = $_SERVER[$k];
+                }
+            }
+            $host = gethostname();
+            $status = DB::table('status')->whereHost($host)->whereIp($ip)->where('created_at',$todayDate)->first();
+        }
+        return view('front.reaction-test', compact('status'));
+    }
+    public function save_state(Request $request){
+        $data['state'] = $request->state;
+        $data['status'] = $request->status;
+        $data['description'] = $request->description;
+        $todayDate = date('Y-m-d');
+        $data['created_at'] = $todayDate;
+        if(Auth::check()){
+            $data['user_id'] = Auth::id();
+            $status = DB::table('status')->where('user_id',Auth::id())->where('created_at',$todayDate)->first();
+            if($status){
+                DB::table('status')->where('user_id',Auth::id())->where('created_at',$todayDate)->update($data);
+            } else {
+                DB::table('status')->where('user_id',Auth::id())->where('created_at',$todayDate)->insert($data);
+            }
+            DB::table('status')->where('user_id',Auth::id())->where('created_at',$todayDate)->updateOrInsert($data);
+        } else {
+            $keys=array('HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','HTTP_X_FORWARDED','HTTP_FORWARDED_FOR','HTTP_FORWARDED','REMOTE_ADDR');
+            foreach($keys as $k) {
+                if (!empty($_SERVER[$k]) && filter_var($_SERVER[$k], FILTER_VALIDATE_IP)) {
+                    $ip = $_SERVER[$k];
+                }
+            }
+            $host = gethostname();
+            $data['ip'] = $ip;
+            $data['host'] = $host;
+            $status = DB::table('status')->whereHost($host)->whereIp($ip)->where('created_at',$todayDate)->first();
+            if($status){
+                DB::table('status')->whereHost($host)->whereIp($ip)->where('created_at',$todayDate)->update($data);
+            } else {
+                DB::table('status')->whereHost($host)->whereIp($ip)->where('created_at',$todayDate)->insert($data);
+            }
+        }
+        return redirect('/reaction-test');
+    }
+    public function update_statue(Request $request){
+        $data['is_retry'] = $request->value;
+        $todayDate = date('Y-m-d');
+        $data['created_at'] = $todayDate;
+        
+        if(Auth::check()){
+            $data['user_id'] = Auth::id();
+            $status = DB::table('status')->where('user_id',Auth::id())->where('created_at',$todayDate)->first();
+            if($status){
+                $result = DB::table('status')->where('user_id',Auth::id())->where('created_at',$todayDate)->update($data);
+            } else {
+                $result = DB::table('status')->where('user_id',Auth::id())->where('created_at',$todayDate)->insert($data);
+            }
+        } else {
+            $keys=array('HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','HTTP_X_FORWARDED','HTTP_FORWARDED_FOR','HTTP_FORWARDED','REMOTE_ADDR');
+            foreach($keys as $k) {
+                if (!empty($_SERVER[$k]) && filter_var($_SERVER[$k], FILTER_VALIDATE_IP)) {
+                    $ip = $_SERVER[$k];
+                }
+            }
+            $host = gethostname();
+            $data['ip'] = $ip;
+            $data['host'] = $host;
+            $status = DB::table('status')->whereHost($host)->whereIp($ip)->where('created_at',$todayDate)->first();
+            if($status){
+                $result = DB::table('status')->whereHost($host)->whereIp($ip)->where('created_at',$todayDate)->update($data);
+            } else {
+                $result = DB::table('status')->whereHost($host)->whereIp($ip)->where('created_at',$todayDate)->insert($data);
+            }
+        }
+        return response()->json($result);
+    }
+    public function visual_memory(){
+        $todayDate = date('Y-m-d');
+        $date = Carbon::now();
+        $start_date = $date->startOfMonth()->format('Y-m-d');
+        $end_date = $date->endOfMonth()->format('Y-m-d');
+        $graph_data = $this->getStat($start_date, $end_date);
+
+        if(Auth::check()){
+            $reactions = ReactionTest::orderBy('id','desc')->where('user_id',Auth::id())->get();
+            $user = User::find(Auth::id());
+            $status = DB::table('status')->where('user_id',Auth::id())->where('created_at',$todayDate)->first();
+        } else {
+            $keys=array('HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','HTTP_X_FORWARDED','HTTP_FORWARDED_FOR','HTTP_FORWARDED','REMOTE_ADDR');
+            foreach($keys as $k) {
+                if (!empty($_SERVER[$k]) && filter_var($_SERVER[$k], FILTER_VALIDATE_IP)) {
+                    $ip = $_SERVER[$k];
+                }
+            }
+            $host = gethostname();
+            $reactions = ReactionTest::orderBy('id','desc')->whereHost($host)->whereIp($ip)->get();
+            $status = DB::table('status')->whereHost($host)->whereIp($ip)->where('created_at',$todayDate)->first();
+            $user = [];
+        }
+        return view('comming-soon');
+        // return view('front.visual-memory',compact('reactions','graph_data','user', 'status'));
+    }
+    public function visual_test(){
+        return view('front.visual-test');
+    }
+    public function number_memory(){
+        $todayDate = date('Y-m-d');
+        $date = Carbon::now();
+        $start_date = $date->startOfMonth()->format('Y-m-d');
+        $end_date = $date->endOfMonth()->format('Y-m-d');
+        $graph_data = $this->getNumberStat($start_date, $end_date);
+
+        if(Auth::check()){
+            $numbers = NumberTest::orderBy('id','desc')->where('user_id',Auth::id())->get();
+            $user = User::find(Auth::id());
+            $status = DB::table('status')->where('user_id',Auth::id())->where('created_at',$todayDate)->first();
+        } else {
+            $keys=array('HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','HTTP_X_FORWARDED','HTTP_FORWARDED_FOR','HTTP_FORWARDED','REMOTE_ADDR');
+            foreach($keys as $k) {
+                if (!empty($_SERVER[$k]) && filter_var($_SERVER[$k], FILTER_VALIDATE_IP)) {
+                    $ip = $_SERVER[$k];
+                }
+            }
+            $host = gethostname();
+            $numbers = NumberTest::orderBy('id','desc')->whereHost($host)->whereIp($ip)->get();
+            $status = DB::table('status')->whereHost($host)->whereIp($ip)->where('created_at',$todayDate)->first();
+            $user = [];
+        }
+        return view('front.number-memory',compact('numbers','graph_data','user', 'status'));
+    }
+    public function getNumberStat($start_date, $end_date){
+        $date = [0=>$start_date,1=>$end_date];
+
+        if(Auth::check()){
+            $graphOrders = NumberTest::select('*')->where('user_id',Auth::id())->whereBetween('created_at',$date);
+        } else {
+            $keys=array('HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','HTTP_X_FORWARDED','HTTP_FORWARDED_FOR','HTTP_FORWARDED','REMOTE_ADDR');
+            foreach($keys as $k) {
+                if (!empty($_SERVER[$k]) && filter_var($_SERVER[$k], FILTER_VALIDATE_IP)) {
+                    $ip = $_SERVER[$k];
+                }
+            }
+            $host = gethostname();
+            $graphOrders = NumberTest::select('*')->whereHost($host)->whereIp($ip)->whereBetween('created_at',$date);
+        }
+        
+        $get_date_series = $this->get_date_series($start_date, $end_date);
+        $days = count($get_date_series);
+        $graph = $this->get_labels($days, $graphOrders->get(), $get_date_series, $start_date, $end_date);
+        
+        $maxScore = [];
+        $minScore = [];
+        foreach ($graph['orders'] as $key => $order) {
+            $array = [];
+            foreach($order as $value){
+                array_push($array,$value->level);
+            }
+            
+            $maxScore[(int)$key] = max($array);
+            $minScore[(int)$key] = min($array);
+        }
+        
+        for($i = 0; $i < $graph['count']; $i++){
+            if(!empty($maxScore[$i])){
+                $statMaximumNumber[$i] = $maxScore[$i];
+            }else{
+                $statMaximumNumber[$i] = 0;
+            }
+            if(!empty($minScore[$i])){
+                $statManimumNumber[$i] = $minScore[$i];
+            }else{
+                $statManimumNumber[$i] = 0;
+            }
+        }
+        $graph_data['statAverageTime'] = $statMaximumNumber;
+        $graph_data['statPercentile'] = $statManimumNumber;
+        $graph_data['statLabel'] = $graph['label'];
+        $graph_data['graph_title1'] = 'Maximum Level';
+        $graph_data['graph_title2'] = 'Minimum Level';
+        return $graph_data;
+    }
+    public function number_test(){
+        return view('front.number-test');
+    }
+    public function legal_disclaimer(){
+        return view('legal-disclaimer');
     }
 }

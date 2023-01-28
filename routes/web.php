@@ -27,7 +27,16 @@ Route::post('/save-reaction-score', [App\Http\Controllers\HomeController::class,
 // Route::get('confirm-email', function () { return view('authentications.confirm-email'); });
 
 Route::get('/reaction-time', [App\Http\Controllers\HomeController::class, 'reaction_time'])->name('reaction-time');
-Route::get('reaction-test', function () { return view('front.reaction-test'); })->name('reaction-test');
+Route::get('/reaction-test', [App\Http\Controllers\HomeController::class, 'reaction_test'])->name('reaction-test');
+Route::post('/save-state', [App\Http\Controllers\HomeController::class, 'save_state'])->name('save-state');
+Route::post('/update-statue', [App\Http\Controllers\HomeController::class, 'update_statue'])->name('update-statue');
+
+Route::get('/visual-memory', [App\Http\Controllers\HomeController::class, 'visual_memory'])->name('visual-memory');
+Route::get('/visual-test', [App\Http\Controllers\HomeController::class, 'visual_test'])->name('visual-test');
+Route::get('/number-memory', [App\Http\Controllers\HomeController::class, 'number_memory'])->name('number-memory');
+Route::get('/number-test', [App\Http\Controllers\HomeController::class, 'number_test'])->name('number-test');
+Route::post('/insert-number-test-score', [App\Http\Controllers\HomeController::class, 'number_test_score'])->name('insert-number-test-score');
+Route::get('/legal-disclaimer', [App\Http\Controllers\HomeController::class, 'legal_disclaimer'])->name('legal-disclaimer');
 
 // For Clear cache
 Route::get('/clear-cache', function() {

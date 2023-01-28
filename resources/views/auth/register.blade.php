@@ -93,7 +93,7 @@
                         <div class="slider-half">
                             <div class="slide-content">
                                 <div class="top-sign-up ">
-                                    <div class="about-comp text-white mt-2">{{__('QUEST VITALITY')}}</div>
+                                <a href="{{ url('/') }}" class="about-comp text-white mt-2">{{__('QUEST VITALITY')}}</a>
                                     <div class="for-sign-up">
                                         <p class="text-white font-12 mt-2 font-weight-300">{{__('Already have an account ?')}}</p>
                                         <a href="{{url('/login')}}">{{__('Login')}}</a>

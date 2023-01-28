@@ -29,7 +29,7 @@
                         <nav class="breadcrumb-one" aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href=""> {{__('Dashboard')}}</a></li>
-                                <li class="breadcrumb-item active" aria-current="page"><span> {{__('Reaction Time')}}</span></li>
+                                <li class="breadcrumb-item active" aria-current="page"><span> {{__('Visual Memory')}}</span></li>
                             </ol>
                         </nav>
                     </div>
@@ -384,7 +384,7 @@
                 } else if(is_state == '') {
                     $('#status-health').show();
                 } else {
-                    window.location.href = "{{ route('reaction-test') }}";
+                    window.location.href = "{{ route('visual-test') }}";
                 }
             })
             $('.closeModal').on('click',function(){

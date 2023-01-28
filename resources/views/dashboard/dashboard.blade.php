@@ -21,6 +21,17 @@
                 display: none;
             }
         }
+        @media only screen and (max-width: 600px) {
+            .mobile-view {
+                display: none;
+            }
+        }
+        .apexcharts-legend.position-bottom.right, .apexcharts-legend.position-top.right{
+            display: none !important;
+        }
+        .apexcharts-legend{
+            position: revert !important;
+        }
     </style>
 @endpush
 
@@ -49,7 +60,7 @@
     <!-- Main Body Starts -->
     <div class="layout-px-spacing">
         <div class="row layout-top-spacing">
-            <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+            <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
                 <a class="widget quick-category">
                     <div class="quick-category-head">
                         <span class="quick-category-icon qc-primary rounded-circle">
@@ -62,7 +73,7 @@
                     </div>
                 </a>
             </div>
-            <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+            <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
                 <a class="widget quick-category">
                     <div class="quick-category-head">
                         <span class="quick-category-icon qcompare-danger rounded-circle">
@@ -70,12 +81,12 @@
                         </span>
                     </div>
                     <div class="quick-category-content">
-                        <h3>0 ms</h3>
+                        <h3>0</h3>
                         <p class="font-17 text-danger mb-0"> {{ __('Visual Memory') }}</p>
                     </div>
                 </a>
             </div>
-            <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+            <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
                 <a class="widget quick-category">
                     <div class="quick-category-head">
                         <span class="quick-category-icon qc-warning rounded-circle">
@@ -83,73 +94,8 @@
                         </span>
                     </div>
                     <div class="quick-category-content">
-                        <h3>0 ms</h3>
+                        <h3>{{ $data['best_number_level'] }}</h3>
                         <p class="font-17 text-warning mb-0"> {{ __('Number Memory') }}</p>
-                    </div>
-                </a>
-            </div>
-            <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
-                <a class="widget quick-category">
-                    <div class="quick-category-head">
-                        <span class="quick-category-icon qcompare-success rounded-circle">
-                            <i class="las la-play"></i>
-                        </span>
-                    </div>
-                    <div class="quick-category-content">
-                        <h3>0 ms</h3>
-                        <p class="font-17 text-success mb-0"> {{ __('Verbal Memory') }}</p>
-                    </div>
-                </a>
-            </div>
-            <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
-                <a class="widget quick-category">
-                    <div class="quick-category-head">
-                        <span class="quick-category-icon qc-primary rounded-circle">
-                            <i class="las la-play"></i>
-                        </span>
-                    </div>
-                    <div class="quick-category-content">
-                        <h3>0 ms</h3>
-                        <p class="font-17 text-primary mb-0"> {{ __('Typing') }}</p>
-                    </div>
-                </a>
-            </div>
-            <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
-                <a class="widget quick-category">
-                    <div class="quick-category-head">
-                        <span class="quick-category-icon qcompare-danger rounded-circle">
-                            <i class="las la-play"></i>
-                        </span>
-                    </div>
-                    <div class="quick-category-content">
-                        <h3>0 ms</h3>
-                        <p class="font-17 text-danger mb-0"> {{ __('Aim Trainer') }}</p>
-                    </div>
-                </a>
-            </div>
-            <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
-                <a class="widget quick-category">
-                    <div class="quick-category-head">
-                        <span class="quick-category-icon qc-warning rounded-circle">
-                            <i class="las la-play"></i>
-                        </span>
-                    </div>
-                    <div class="quick-category-content">
-                        <h3>0 ms</h3>
-                        <p class="font-17 text-warning mb-0"> {{ __('Chimp Test') }}</p>
-                    </div>
-                </a>
-            </div>
-            <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
-                <a class="widget quick-category">
-                    <div class="quick-category-head">
-                        <span class="quick-category-icon qcompare-success rounded-circle">
-                            <i class="las la-play"></i>
-                        </span>
-                    </div>
-                    <div class="quick-category-content">
-                        <h3>0 ms</h3>
-                        <p class="font-17 text-success mb-0"> {{ __('Sequence Memory') }}</p>
                     </div>
                 </a>
             </div>
@@ -157,13 +103,13 @@
             <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
                 <div id="Average Report" class="widget widget-chart-one">
                     <div class="widget-heading">
-                        <h5 class=""> {{ __('Average Reports') }}</h5>
+                        <h5 class="mobile-view"> {{ __('Average Reports') }}</h5>
                         <form action="{{ route('dashboard') }}" method="post">
                             @csrf
                             <ul class="tabs tab-pills">
                                 <li class="nav-item more-dropdown">
                                     <div class="input-group input-group-sm">
-                                        <input id="rangeCalendarFlatpickr" name="date" class="form-control flatpickr flatpickr-input active" type="text" placeholder="{{__('Select Date')}}">
+                                        <input id="rangeCalendarFlatpickr" name="date" value="<?php echo $passing['start_date'].' to '.$passing['end_date'] ?>" class="form-control flatpickr flatpickr-input active" type="text" placeholder="{{__('Select Date')}}">
                                         <div class="input-group-append">
                                             <span class="input-group-text bg-primary border-primary" id="basic-addon2">
                                                 <i class="lar la-calendar"></i>
@@ -175,17 +121,19 @@
                                     <a href="javascript: void(0);" data-original-title="{{__('Filter By')}}" data-placement="bottom" id="customDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-primary dash-btn btn-sm ml-2 bs-tooltip">
                                         <i class="las la-filter"></i>
                                     </a>
+                                    <style>
+                                        .active-filter{
+                                            background-color: #edf2fd;
+                                            border-radius: 6px;
+                                        }
+                                    </style>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="customDropdown">
-                                        <a class="dropdown-item" href="javascript:void(0);"> {{ __('Reaction Time') }}</a>
-                                        <a class="dropdown-item" href="javascript:void(0);"> {{ __('Visual Memory') }}</a>
-                                        <a class="dropdown-item" href="javascript:void(0);"> {{ __('Number Memory') }}</a>
-                                        <a class="dropdown-item" href="javascript:void(0);"> {{ __('Verbal Memory') }}</a>
-                                        <a class="dropdown-item" href="javascript:void(0);"> {{ __('Typing') }}</a>
-                                        <a class="dropdown-item" href="javascript:void(0);"> {{ __('Aim Trainer') }}</a>
-                                        <a class="dropdown-item" href="javascript:void(0);"> {{ __('Chimp Test') }}</a>
-                                        <a class="dropdown-item" href="javascript:void(0);"> {{ __('Sequence Memory') }}</a>
+                                        <a class="dropdown-item filterDropdown <?php if($passing['filter'] == 'reaction'){echo 'active-filter';} ?>" data-value="reaction" href="javascript:void(0);"> {{ __('Reaction Time') }}</a>
+                                        <a class="dropdown-item filterDropdown <?php if($passing['filter'] == 'visual'){echo 'active-filter';} ?>" data-value="visual" href="javascript:void(0);"> {{ __('Visual Memory') }}</a>
+                                        <a class="dropdown-item filterDropdown <?php if($passing['filter'] == 'number'){echo 'active-filter';} ?>" data-value="number" href="javascript:void(0);"> {{ __('Number Memory') }}</a>
                                     </div>
                                 </li>
+                                <input type="hidden" name="filter" id="filter" value="reaction">
                                 <li class="nav-item more-dropdown">
                                     <button type="submit" data-original-title="{{__('Reload Data')}}"data-placement="bottom" class="btn btn-primary dash-btn btn-sm ml-2 bs-tooltip"><i class="las la-sync"></i></button>
                                 </li>
@@ -246,7 +194,7 @@
                                 @endif
                                 <div class="ml-2">
                                         @if(!$user)
-                                        <a href="{{ url('/login') }}"><h5 class="mb-0"> Sign Up</h5></a>
+                                        <a href="{{ url('/register') }}"><h5 class="mb-0"> Sign Up</h5></a>
                                         @endif
                                     </div>
                                 </div>
@@ -280,133 +228,75 @@
                     </div>
                     <div class="widget-content">
                         <div class="table-responsive">
+                            <?php if($passing['filter'] == 'reaction'): ?>
                             <table class="table table-hover">
                                 <thead>
-                                <tr>
-                                    <th><div class="th-content"> {{__('Test')}}</div></th>
-                                    <th><div class="th-content"> {{__('Test Now')}}</div></th>
-                                    <th><div class="th-content"> {{__('Stats')}}</div></th>
-                                    <th><div class="th-content"> {{__('Personal Average Reaction')}}(<i class="fa fa-info" title="Average of last five score"></i>)</div></th>
-                                    <th><div class="th-content"> {{__('Percentile')}}(<i class="fa fa-info" title="Percentile from average last five score"></i>)</div></th>
-                                    <th><div class="th-content"> {{__('Best Time')}}</div></th>
-                                    <!-- <th><div class="th-content"> {{__('Bad Day')}}</div></th> -->
-                                </tr>
+                                    <tr>
+                                        <th><div class="th-content"> {{__('Test')}}</div></th>
+                                        <th><div class="th-content"> {{__('Test Now')}}</div></th>
+                                        <th><div class="th-content"> {{__('Stats')}}</div></th>
+                                        <th><div class="th-content"> {{__('Personal Average Reaction')}}(<i class="fa fa-info" title="Average of last five score"></i>)</div></th>
+                                        <th><div class="th-content"> {{__('Percentile')}}(<i class="fa fa-info" title="Percentile from average last five score"></i>)</div></th>
+                                        <th><div class="th-content"> {{__('Best Time')}}</div></th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>Reaction Time</td>
-                                    <td>
-                                        <a href="{{ route('reaction-test') }}" class="bs-tooltip font-20 text-muted" title="Test Now"><i class="las la-play"></i> Test Now</a>
-                                    </td>
-                                    <td>
-                                        <a href="#Average Report" class="bs-tooltip font-20 text-primary ml-2" title="{{__('Stats')}}"><i class="las la-map"></i> Stats</a>
-                                    </td>
-                                    <td><b>{{ $data['personal_average_reaction'] }}</b> ms</td>
-                                    <td><b>{{ $data['percentile'] }}</b></td>
-                                    <td><b>{{ $data['best_time'] }}</b> ms</td>
-                                    <!-- <td><b>0</b></td> -->
-                                </tr>
-                                <tr>
-                                    <td>Visual Memory</td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-muted" title="Test Now"><i class="las la-play"></i> Test Now</a>
-                                    </td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-primary ml-2" title="{{__('Stats')}}"><i class="las la-map"></i> Stats</a>
-                                    </td>
-                                    <td><b>0</b> ms</td>
-                                    <td><b>0</b> %</td>
-                                    <td><b>0</b></td>
-                                    <!-- <td><b>0</b></td> -->
-                                </tr>
-                                <tr>
-                                    <td>Number Memory</td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-muted" title="Test Now"><i class="las la-play"></i> Test Now</a>
-                                    </td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-primary ml-2" title="{{__('Stats')}}"><i class="las la-map"></i> Stats</a>
-                                    </td>
-                                    <td><b>0</b> ms</td>
-                                    <td><b>0</b> %</td>
-                                    <td><b>0</b></td>
-                                    <!-- <td><b>0</b></td> -->
-                                </tr>
-                                <tr>
-                                    <td>Verbal Memory</td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-muted" title="Test Now"><i class="las la-play"></i> Test Now</a>
-                                    </td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-primary ml-2" title="{{__('Stats')}}"><i class="las la-map"></i> Stats</a>
-                                    </td>
-                                    <td><b>0</b> ms</td>
-                                    <td><b>0</b> %</td>
-                                    <td><b>0</b></td>
-                                    <!-- <td><b>0</b></td> -->
-                                </tr>
-                                <tr>
-                                    <td>Typing</td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-muted" title="Test Now"><i class="las la-play"></i> Test Now</a>
-                                    </td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-primary ml-2" title="{{__('Stats')}}"><i class="las la-map"></i> Stats</a>
-                                    </td>
-                                    <td><b>0</b> ms</td>
-                                    <td><b>0</b> %</td>
-                                    <td><b>0</b></td>
-                                    <!-- <td><b>0</b></td> -->
-                                </tr>
-                                <tr>
-                                    <td>Aim Trainer</td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-muted" title="Test Now"><i class="las la-play"></i> Test Now</a>
-                                    </td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-primary ml-2" title="{{__('Stats')}}"><i class="las la-map"></i> Stats</a>
-                                    </td>
-                                    <td><b>0</b> ms</td>
-                                    <td><b>0</b> %</td>
-                                    <td><b>0</b></td>
-                                    <!-- <td><b>0</b></td> -->
-                                </tr>
-                                <tr>
-                                    <td>Chimp Test</td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-muted" title="Test Now"><i class="las la-play"></i> Test Now</a>
-                                    </td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-primary ml-2" title="{{__('Stats')}}"><i class="las la-map"></i> Stats</a>
-                                    </td>
-                                    <td><b>0</b> ms</td>
-                                    <td><b>0</b> %</td>
-                                    <td><b>0</b></td>
-                                    <!-- <td><b>0</b></td> -->
-                                </tr>
-                                <tr>
-                                    <td>Sequence Memory</td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-muted" title="Test Now"><i class="las la-play"></i> Test Now</a>
-                                    </td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="bs-tooltip font-20 text-primary ml-2" title="{{__('Stats')}}"><i class="las la-map"></i> Stats</a>
-                                    </td>
-                                    <td><b>0</b> ms</td>
-                                    <td><b>0</b> %</td>
-                                    <td><b>0</b></td>
-                                    <!-- <td><b>0</b></td> -->
-                                </tr>
-                               
+                                    <tr>
+                                        <td>Reaction Time</td>
+                                        <td>
+                                            <a href="{{ route('reaction-time') }}" class="bs-tooltip font-20 text-muted" title="Test Now"><i class="las la-play"></i> Test Now</a>
+                                        </td>
+                                        <td>
+                                            <a href="#Average Report" class="bs-tooltip font-20 text-primary ml-2" title="{{__('Stats')}}"><i class="las la-map"></i> Stats</a>
+                                        </td>
+                                        <td><b>{{ $data['personal_average_reaction'] }}</b> ms</td>
+                                        <td><b>{{ $data['percentile'] }}</b></td>
+                                        <td><b>{{ $data['best_time'] }}</b> ms</td>
+                                    </tr>
                                 </tbody>
                             </table>
+                            <?php else: ?>
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th><div class="th-content"> {{__('Test')}}</div></th>
+                                            <th><div class="th-content"> {{__('Test Now')}}</div></th>
+                                            <th><div class="th-content"> {{__('Stats')}}</div></th>
+                                            <th><div class="th-content"> {{__('Percentile')}}(<i class="fa fa-info" title="Percentile from average last five score"></i>)</div></th>
+                                            <th><div class="th-content"> {{__('Best Digits')}}</div></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Number Memory</td>
+                                            <td>
+                                                <a href="{{ route('number-memory') }}" class="bs-tooltip font-20 text-muted" title="Test Now"><i class="las la-play"></i> Test Now</a>
+                                            </td>
+                                            <td>
+                                                <a href="#Average Report" class="bs-tooltip font-20 text-primary ml-2" title="{{__('Stats')}}"><i class="las la-map"></i> Stats</a>
+                                            </td>
+                                            <td>
+                                                <b>
+                                                    @if($data['best_number_level'] <= 7)
+                                                        Below Average
+                                                    @elseif($data['best_number_level'] >= 8 && $number <= 9)
+                                                        Average
+                                                    @elseif($data['best_number_level'] > 9)
+                                                        Above Average
+                                                    @endif
+                                                </b>
+                                            </td>
+                                            <td><b>{{ $data['best_number_level'] }}</b></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Main Body Ends -->
 @endsection
 
 @push('plugin-scripts')
@@ -530,14 +420,14 @@
                         lineCap: 'square'
                     },
                     series: [{
-                        name: 'Average Score Per Day',
+                        name: '<?= $graph_data['graph_title1'] ?>',
                         data: [
                             <?php foreach($graph_data['statAverageTime'] as $par): ?>
                                 "<?php echo $par; ?>",
                             <?php endforeach; ?>
                         ]
                     }, {
-                        name: 'Percentile Per Day',
+                        name: '<?= $graph_data['graph_title2'] ?>',
                         data: [
                             <?php foreach($graph_data['statPercentile'] as $percent): ?>
                                 <?= $percent ?>,
@@ -678,5 +568,13 @@
             }
             })(jQuery);
 
+    </script>
+    <script>
+        $(document).ready(function(){
+            $(document).on('click','.filterDropdown',function(){
+                var value = $(this).data('value');
+                $('#filter').val(value);
+            })
+        })
     </script>
 @endpush
